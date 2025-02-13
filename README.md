@@ -16,7 +16,7 @@ Activity Tracker Web is a simple React.js application that allows users to track
 
 - **Environment**: Vite
 - **Frontend**: React.js, React Router, Tailwind CSS
-- **Charts**: Recharts
+- **Charts**: Echarts
 - **State Management**: useState, Context API
 - **Deployment**: Vercel / Netlify
 
