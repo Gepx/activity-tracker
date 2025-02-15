@@ -1,5 +1,16 @@
 @import "tailwindcss";
 
 /* Plugins */
-@plugin '@tailwindcss/forms';
-@plugin '@tailwindcss/typography';
+@plugin "@tailwindcss/forms";
+@plugin "@tailwindcss/typography";
+
+/* Import Google Fonts */
+/* @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"); */
+
+:root {
+  --font-poppins: "Poppins", sans-serif;
+}
+
+.font-poppins {
+  font-family: var(--font-poppins);
+}

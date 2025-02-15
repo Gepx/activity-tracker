@@ -5,7 +5,6 @@ import {
   faGauge,
   faCalendarAlt,
   faStar,
-  faBookOpen,
   faUser,
   faCommentDots,
   faCog,
@@ -68,7 +67,7 @@ const AfterLoginNav = () => {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 p-6 bg-gray-100">
+      <main className="flex-1 px-2">
         <Outlet />
       </main>
     </div>
