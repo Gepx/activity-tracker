@@ -1,6 +1,7 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import AfterLoginNav from "./layouts/AfterLoginNav";
 import Dashboard from "./pages/Dashboard";
+import Login from "./pages/Login";
 
 export const router = createBrowserRouter([
   //   {
@@ -15,5 +16,13 @@ export const router = createBrowserRouter([
       { index: true, element: <Navigate to="/dashboard" /> },
       { path: "/dashboard", element: <Dashboard /> },
     ],
+  },
+  {
+    path: "/login",
+    element: <Login />,
+    // children: [
+    //   { index: true, element: <Navigate to="/dashboard" /> },
+    //   { path: "/dashboard", element: <Dashboard /> },
+    // ],
   },
 ]);
