@@ -10,6 +10,7 @@ const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
   const [currentImage, setCurrentImage] = useState(0)
   const [currentText, setCurrentText] = useState(0)
   const navigate = useNavigate()
@@ -40,11 +41,21 @@ const Login = () => {
     e.preventDefault();
 
     if (isLogin) {
-      navigate('/dashboard')
+      const storedUser = JSON.parse(localStorage.getItem('user'));
+
+      if (storedUser && storedUser.username === username && storedUser.password === password) {
+        setErrorMessage('')
+        navigate('/dashboard');
+      } else {
+        setErrorMessage(`Username or password doesn't match!`);
+      }
     } else {
-      setIsLogin(true)
-      setUsername('')
-      setPassword('')
+      const newUser = { username, password };
+      localStorage.setItem('user', JSON.stringify(newUser));
+      setIsLogin(true);
+      setUsername('');
+      setPassword('');
+      setErrorMessage('')
     }
   };
 
@@ -53,7 +64,7 @@ const Login = () => {
       <LoginNav />
       <div className="flex h-screen pt-16 bg-gray-900 text-white">
         {/* Left Side - Image/Carousel */}
-        <div className="w-1/2 flex items-center justify-center p-4 pl-17">
+        <div className="w-3/5 flex items-center justify-center p-4 pl-17">
           <div className="relative w-full h-[70%] flex items-center justify-center bg-gray-800 rounded-lg">
             <img 
               src={images[currentImage]}
@@ -72,7 +83,15 @@ const Login = () => {
             <p className="text-center text-gray-400 mb-6">
               {isLogin ? "Don't have an account?" : "Already have an account?"}  
               <button 
-                onClick={() => setIsLogin(!isLogin)} 
+                onClick={
+                  () => {
+                    setIsLogin(!isLogin)
+                    setErrorMessage('')
+                    setUsername('')
+                    setPassword('')
+                    setShowPassword(false)
+                  }
+                } 
                 className="text-blue-400 ml-1 cursor-pointer"
               >
                 {isLogin ? "Sign up" : "Log in"}
@@ -106,6 +125,9 @@ const Login = () => {
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
               </div>
+
+              {errorMessage && <p className="text-red-500 text-sm mb-4 font-semibold">{errorMessage}</p>}
+
               {isLogin? 
                 null :
                 <div className="mb-4 flex items-center">
@@ -117,6 +139,7 @@ const Login = () => {
               <button
                 type="submit"
                 className="w-full bg-purple-500 text-white py-2 rounded-lg hover:bg-purple-600 transition duration-300 cursor-pointer"
+                onClick={() => setShowPassword(false)}
               >
                 {isLogin ? "Login" : "Create account"}
               </button>
