@@ -9,12 +9,7 @@ import SupportDropDown from "../components/SupportDropDown";
 
 const Support = () => {
   return (
-    <div
-      className="bg-[#121212] h-screen overflow-y-scroll"
-      style={{ scrollbarWidth: "none" }}>
-      {" "}
-      {/* FIXED REQUIREMENT!!!!!! */}
-      {/* <div className='bg-[#121212] min-h-screen overflow-y-scroll scrollbar-none'> */}
+    <div className="bg-[#121212] h-screen overflow-y-scroll no-scrollbar">
       <div className="top flex justify-center gap-20 pt-20">
         <SupportBox
           icon={faAddressBook}
