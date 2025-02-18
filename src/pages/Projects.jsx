@@ -1,8 +1,18 @@
+import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBell, faSearch } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBell,
+  faCalendarDays,
+  faClock,
+  faPen,
+  faSearch,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
 import profileImage from "../assets/img/pooh.gif";
 
 const Projects = () => {
+  const [menuOpen, setMenuOpen] = useState(null);
+
   const sections = [
     {
       title: "To-Do",
@@ -12,25 +22,22 @@ const Projects = () => {
           title: "Attendance Apps",
           date: "Oct 3, 2020",
           description: "Employee can confirm the attendance online.",
-          users: ["👤", "👤", "👤"],
-          progress: "2/5",
-          comments: 4,
+          createdDate: "12 Feb 2025",
+          createdTime: "17:00",
         },
         {
           title: "UI Food Apps",
           date: "3 days left",
           description: "No need to go to restaurant anymore, take it easy.",
-          users: ["👤"],
-          progress: "11/12",
-          comments: 20,
+          createdDate: "11 Feb 2025",
+          createdTime: "14:00",
         },
         {
           title: "Money Manager",
           date: "Oct 27, 2020",
           description: "Manage your money wisely, so you can be rich quickly.",
-          users: ["👤", "👤"],
-          progress: "0/10",
-          comments: 0,
+          createdDate: "10 Feb 2025",
+          createdTime: "12:00",
         },
       ],
     },
@@ -42,18 +49,16 @@ const Projects = () => {
           title: "Thrifting Apps",
           date: "1 day left",
           description: "Buy thrift things and any secondhand in apps.",
-          users: ["👤", "👤", "👤"],
-          progress: "4/5",
-          comments: 16,
+          createdDate: "10 Feb 2025",
+          createdTime: "12:00",
         },
         {
           title: "Task Manager",
           date: "Oct 28, 2020",
           description:
             "Manage your time to do your tasks, finish it one by one.",
-          users: ["👤", "👤", "👤"],
-          progress: "9/16",
-          comments: 11,
+          createdDate: "10 Feb 2025",
+          createdTime: "12:00",
         },
       ],
     },
@@ -65,24 +70,22 @@ const Projects = () => {
           title: "Marketplace Apps",
           date: "1 day left",
           description: "Shopping from home, only scrolling your phone.",
-          users: ["👤", "👤"],
-          progress: "6/7",
-          comments: 12,
+          createdDate: "10 Feb 2025",
+          createdTime: "12:00",
         },
         {
           title: "Cashier Apps",
           date: "Oct 20, 2020",
           description: "Take the restaurant payment easily.",
-          users: ["👤", "👤"],
-          progress: "5/10",
-          comments: 6,
+          createdDate: "10 Feb 2025",
+          createdTime: "12:00",
         },
       ],
     },
   ];
   return (
     <div className="h-screen flex overflow-hidden font-poppins">
-      <main className="flex-1 px-6 py-6">
+      <main className="flex-1 px-6 py-6 overflow-auto no-scrollbar">
         {/* Top Section Title */}
         <div className="flex items-center justify-between">
           <div>
@@ -132,33 +135,14 @@ const Projects = () => {
           </div>
         </div>
 
-        {/* <div className="flex items-center gap-3">
-          <div className="flex items-center flex-col gap-1 flex-start">
-            <div className="flex items-center gap-1">
-              <h1>To-Do</h1>
-              <span>(4)</span>
-            </div>
-            <div>
-              <div className="flex items-center justify-between">
-                <h3>Attendance Apps</h3>
-                <span>...</span>
-              </div>
-              <p>Feb 20, 2025</p>
-              <p>Employee can confirm the attendance online.</p>
-              <div>
-                <p>17 Feb 2025</p>
-                <button>Delete</button>
-              </div>
-            </div>
-          </div>
-        </div> */}
-        <div className="flex gap-6 p-6 overflow-x-auto">
+        {/* Tasks List Categories */}
+        <div className="flex gap-6 mt-6">
           {sections.map((section, index) => (
-            <div key={index} className="w-[320px] min-w-[320px]">
+            <div key={index} className="w-[300px] min-w-[300px]">
               {/* Section Header */}
-              <div className="flex items-center gap-2 mb-4">
-                <h2 className="text-lg font-semibold">{section.title}</h2>
-                <span className="text-gray-500">({section.count})</span>
+              <div className="flex items-center gap-2 mb-3">
+                <h2 className="text-md font-semibold">{section.title}</h2>
+                <span className="text-xs text-gray-500">({section.count})</span>
               </div>
 
               {/* Task Cards */}
@@ -166,11 +150,34 @@ const Projects = () => {
                 {section.tasks.map((task, idx) => (
                   <div
                     key={idx}
-                    className="bg-white p-4 rounded-lg shadow-md border border-gray-200">
+                    className="bg-white p-4 rounded-lg shadow-md border border-gray-200 w-[300px] h-[159px]">
                     {/* Title and Menu */}
-                    <div className="flex justify-between items-center">
+                    <div className="relative flex justify-between items-center">
                       <h3 className="text-md font-medium">{task.title}</h3>
-                      <button className="text-gray-500">⋮</button>
+                      <div>
+                        <button
+                          className="relative text-gray-500 cursor-pointer"
+                          onClick={() =>
+                            setMenuOpen(menuOpen === idx ? null : idx)
+                          }>
+                          ...
+                        </button>
+                        {/* Dropdown Menu */}
+                        {menuOpen === idx && (
+                          <div className="absolute right-0 top-8 bg-white border border-gray-200 shadow-lg rounded-md w-28 text-sm">
+                            <button
+                              className="flex items-center gap-2 w-full px-3 py-2 hover:bg-gray-100 cursor-pointer"
+                              onClick={() => console.log("Edit clicked")}>
+                              <FontAwesomeIcon icon={faPen} /> Edit
+                            </button>
+                            <button
+                              className="flex items-center gap-2 w-full px-3 py-2 text-red-500 hover:bg-gray-100 cursor-pointer"
+                              onClick={() => console.log("Delete clicked")}>
+                              <FontAwesomeIcon icon={faTrash} /> Delete
+                            </button>
+                          </div>
+                        )}
+                      </div>
                     </div>
 
                     {/* Date Badge */}
@@ -189,22 +196,17 @@ const Projects = () => {
                     </p>
 
                     {/* Footer */}
-                    <div className="flex justify-between items-center mt-4">
-                      {/* Avatars */}
-                      <div className="flex -space-x-2">
-                        {task.users.map((user, idx) => (
-                          <span
-                            key={idx}
-                            className="w-6 h-6 flex items-center justify-center rounded-full bg-gray-300 text-xs">
-                            {user}
-                          </span>
-                        ))}
-                      </div>
 
-                      {/* Progress & Comments */}
-                      <div className="flex items-center gap-3 text-gray-500 text-sm">
-                        <span>📑 {task.progress}</span>
-                        <span>💬 {task.comments}</span>
+                    {/* Progress & Comments */}
+                    <div className="items-end">
+                      <div className="flex items-center  mt-3 gap-3 text-gray-500 text-xs">
+                        <span>
+                          <FontAwesomeIcon icon={faCalendarDays} />{" "}
+                          {task.createdDate}
+                        </span>
+                        <span>
+                          <FontAwesomeIcon icon={faClock} /> {task.createdTime}
+                        </span>
                       </div>
                     </div>
                   </div>
