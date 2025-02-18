@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom'
+import { Eye, EyeOff } from 'lucide-react'
 import LoginNav from '../layouts/LoginNav';
 import Carousel_1 from '../assets/carousel-1.jpg'
 import Carousel_2 from '../assets/Carousel-2.jpg'
@@ -8,12 +9,16 @@ const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false)
   const [currentImage, setCurrentImage] = useState(0)
   const [currentText, setCurrentText] = useState(0)
   const navigate = useNavigate()
 
   const images = [Carousel_1, Carousel_2]
-  const texts = ['Stay on Track, Stay Ahead.', 'Plan. Track. Achieve.']
+  const texts = [
+    'Stay on Track, Stay Ahead.', 
+    'Plan. Track. Achieve.'
+  ]
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -68,7 +73,7 @@ const Login = () => {
               {isLogin ? "Don't have an account?" : "Already have an account?"}  
               <button 
                 onClick={() => setIsLogin(!isLogin)} 
-                className="text-blue-400 ml-1"
+                className="text-blue-400 ml-1 cursor-pointer"
               >
                 {isLogin ? "Sign up" : "Log in"}
               </button>
@@ -84,27 +89,34 @@ const Login = () => {
                   required
                 />
               </div>
-              <div className="mb-4">
+              <div className="mb-4 relative">
                 <input
-                  type="password"
+                  type={showPassword? "text" : "password"}
                   placeholder="Enter your password"
                   className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300 bg-gray-700 text-white"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 />
+                <button
+                  type="button"
+                  className="absolute inset-y-0 right-2 flex items-center text-gray-400 hover:text-white"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
               </div>
               {isLogin? 
                 null :
                 <div className="mb-4 flex items-center">
-                  <input type="checkbox" className="mr-2" required />
+                  <input type="checkbox" className="mr-2 cursor-pointer" required />
                   <span className="text-gray-400">I agree to the <a href="#" className="text-blue-400">Terms & Conditions</a></span>
                 </div>
               }
               
               <button
                 type="submit"
-                className="w-full bg-purple-500 text-white py-2 rounded-lg hover:bg-purple-600 transition duration-300"
+                className="w-full bg-purple-500 text-white py-2 rounded-lg hover:bg-purple-600 transition duration-300 cursor-pointer"
               >
                 {isLogin ? "Login" : "Create account"}
               </button>
