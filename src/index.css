@@ -9,6 +9,19 @@
 
 :root {
   --font-poppins: "Poppins", sans-serif;
+  --hidden-bar: none;
+}
+
+@layer utilities {
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: var(--hidden-bar);
+  }
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
 }
 
 .font-poppins {
