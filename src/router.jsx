@@ -1,6 +1,7 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import AfterLoginNav from "./layouts/AfterLoginNav";
 import Dashboard from "./pages/Dashboard";
+import Calendar from "./pages/Calendar";
 import Projects from "./pages/Projects";
 
 export const router = createBrowserRouter([
@@ -15,6 +16,7 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: <Navigate to="/dashboard" /> },
       { path: "/dashboard", element: <Dashboard /> },
+      { path: "/calendar", element: <Calendar /> },
       { path: "/projects", element: <Projects /> },
     ],
   },
