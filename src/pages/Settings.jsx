@@ -1,8 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import SettingsButton from '../components/SettingsButton'
 import { faWandMagicSparkles, faPerson, faLock } from '@fortawesome/free-solid-svg-icons'
 
 const Settings = () => {
+    const [firstName, setFirstName] = useState('')
+    const [lastName, setLastName] = useState('')
+    const [email, setEmail] = useState('')
+
   return (
     // <div className='bg-[#121212] min-h-screen flex'>
     <div className='min-h-screen flex'>
@@ -65,8 +69,53 @@ const Settings = () => {
                 />
             </div>
         </div>
-        <div className="right-side w-4/7">
-            <p className='pt-9'>tes</p>
+        <div className="right-side w-4/7 pl-7">
+            <p className='py-9 font-semibold text-xl'>
+                Account Settings
+                <span className="block w-full mt-8 border-b-2 border-[#323444] opacity-50"></span>
+            </p>
+            <p className='font-semibold text-xl mb-3'>Personal Informations</p>
+            <p className='text-gray-500 mb-6'>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+
+            {/* Form */}
+            <form>
+                <div className="inline-name flex gap-4 mb-4">
+                    <div className="w-80">
+                        <label htmlFor="FirstName" className="block font-semibold mb-2">First Name</label>
+                        <input 
+                            type="text" 
+                            id="FirstName" 
+                            value={firstName}
+                            onChange={(e) => setFirstName(e.target.value)}
+                            className="border border-gray-400 p-2 rounded-md w-full focus:ring focus:border-blue-500" 
+                        />
+                    </div>
+                    <div className="w-80">
+                        <label htmlFor="LastName" className="block font-semibold mb-2">Last Name</label>
+                        <input 
+                            type="text" 
+                            id="LastName" 
+                            value={lastName}
+                            onChange={(e) => setLastName(e.target.value)}
+                            className="border border-gray-400 p-2 rounded-md w-full focus:ring focus:border-blue-500" 
+                        />
+                    </div>
+                </div>
+                <div className="mb-4">
+                    <label htmlFor="Email" className="block font-semibold mb-2">Email</label>
+                    <input 
+                        type="email" 
+                        id="Email" 
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className="border border-gray-400 p-2 rounded-md w-164 focus:ring focus:border-blue-500" 
+                    />
+                </div>
+                <div className="button-form w-164 flex justify-between mt-6">
+                    <button className='bg-green-600 hover:bg-green-700 text-white p-3 font-semibold text-lg w-80 cursor-pointer rounded-2xl'>Discard Changes</button>
+                    <button className='bg-green-600 hover:bg-green-700 text-white p-3 font-semibold text-lg w-80 cursor-pointer rounded-2xl'>Save Changes</button>
+                </div>
+            </form>
         </div>
     </div>
   )
