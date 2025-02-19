@@ -1,11 +1,12 @@
 import React from 'react'
 import SettingsButton from '../components/SettingsButton'
+import { faComment } from '@fortawesome/free-solid-svg-icons'
 
 const Settings = () => {
   return (
     // <div className='bg-[#121212] min-h-screen flex'>
     <div className='min-h-screen flex'>
-        {/* <div className="left-side pl-7 w-3/7 border-r border-gray-50"> */}
+        {/* <div className="left-side pl-7 w-3/7 border-r border-[#323444]"> */}
         <div className="left-side pl-7 w-3/7 border-r border-gray-600">
             <p className='pt-9 font-semibold text-xl'>Settings</p>
             <div className="box-profile mt-8 bg-green-500 max-w-123 p-3 rounded-xl text-white">
@@ -46,8 +47,22 @@ const Settings = () => {
                 </div>
                 <button className='min-w-full mt-3 py-2 font-semibold bg-green-600 hover:bg-green-700 rounded-xl cursor-pointer'>Complete My Profile</button>
             </div>
-            <div className="settings-button">
-                <SettingsButton />
+            <div className="settings-button mt-8">
+                <SettingsButton
+                    icon={faComment}
+                    title={'Appearances'}
+                    description={'Dark and Light Mode, Font Size'}
+                />
+                <SettingsButton
+                    icon={faComment}
+                    title={'Account Settings'}
+                    description={'Personal Informations, Email'}
+                />
+                <SettingsButton
+                    icon={faComment}
+                    title={'Security'}
+                    description={'Change Password, 2 Factor Authorization'}
+                />
             </div>
         </div>
         <div className="right-side w-4/7">
