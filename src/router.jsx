@@ -1,8 +1,8 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import AfterLoginNav from "./layouts/AfterLoginNav";
 import Dashboard from "./pages/Dashboard";
-import Projects from "./pages/Projects";
 import Calendar from "./pages/Calendar";
+import Projects from "./pages/Projects";
 
 export const router = createBrowserRouter([
   //   {
