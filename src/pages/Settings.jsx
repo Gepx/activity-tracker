@@ -1,6 +1,6 @@
 import React from 'react'
 import SettingsButton from '../components/SettingsButton'
-import { faComment } from '@fortawesome/free-solid-svg-icons'
+import { faWandMagicSparkles, faPerson, faLock } from '@fortawesome/free-solid-svg-icons'
 
 const Settings = () => {
   return (
@@ -49,17 +49,17 @@ const Settings = () => {
             </div>
             <div className="settings-button mt-8">
                 <SettingsButton
-                    icon={faComment}
+                    icon={faWandMagicSparkles}
                     title={'Appearances'}
                     description={'Dark and Light Mode, Font Size'}
                 />
                 <SettingsButton
-                    icon={faComment}
+                    icon={faPerson}
                     title={'Account Settings'}
                     description={'Personal Informations, Email'}
                 />
                 <SettingsButton
-                    icon={faComment}
+                    icon={faLock}
                     title={'Security'}
                     description={'Change Password, 2 Factor Authorization'}
                 />

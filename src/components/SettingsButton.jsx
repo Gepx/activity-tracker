@@ -10,7 +10,7 @@ const SettingsButton = ({icon, title, description}) => {
             <FontAwesomeIcon 
                 icon={icon} 
                 // className='p-2 rounded-lg bg-[#212121] text-xl' 
-                className='p-2 rounded-lg bg-gray-200 text-xl' 
+                className='p-2 rounded-lg bg-gray-200 text-xl min-w-5' 
             />
         </div>
         <div className="middle-settings-button ml-3 pt-1 text-lg min-w-100">
