@@ -67,7 +67,7 @@ const AfterLoginNav = () => {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 px-2">
+      <main className="flex-1"> {/* remove padding */}
         <Outlet />
       </main>
     </div>
