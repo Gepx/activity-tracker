@@ -6,6 +6,7 @@ const Settings = () => {
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
     const [email, setEmail] = useState('')
+    const [phoneNumber, setPhoneNumber] = useState('')
 
   return (
     // <div className='bg-[#121212] min-h-screen flex'>
@@ -13,7 +14,7 @@ const Settings = () => {
         {/* <div className="left-side pl-7 w-3/7 border-r border-[#323444]"> */}
         <div className="left-side pl-7 w-3/7 border-r border-gray-600">
             <p className='pt-9 font-semibold text-xl'>Settings</p>
-            <div className="box-profile mt-8 bg-green-500 max-w-123 p-3 rounded-xl text-white">
+            <div className="box-profile mt-8 bg-green-500 max-w-123 p-3 rounded-xl text-white mr-5">
                 <div className="top-box flex p-2 justify-between items-center">
                     <div className="relative w-20 h-20">
                         <svg className="w-full h-full" viewBox="0 0 100 100">
@@ -51,7 +52,7 @@ const Settings = () => {
                 </div>
                 <button className='min-w-full mt-3 py-2 font-semibold bg-green-600 hover:bg-green-700 rounded-xl cursor-pointer'>Complete My Profile</button>
             </div>
-            <div className="settings-button mt-8">
+            <div className="settings-button mt-8 mr-5">
                 <SettingsButton
                     icon={faWandMagicSparkles}
                     title={'Appearances'}
@@ -88,6 +89,7 @@ const Settings = () => {
                             value={firstName}
                             onChange={(e) => setFirstName(e.target.value)}
                             className="border border-gray-400 p-2 rounded-md w-full focus:ring focus:border-blue-500" 
+                            required
                         />
                     </div>
                     <div className="w-80">
@@ -98,6 +100,7 @@ const Settings = () => {
                             value={lastName}
                             onChange={(e) => setLastName(e.target.value)}
                             className="border border-gray-400 p-2 rounded-md w-full focus:ring focus:border-blue-500" 
+                            required
                         />
                     </div>
                 </div>
@@ -109,10 +112,32 @@ const Settings = () => {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         className="border border-gray-400 p-2 rounded-md w-164 focus:ring focus:border-blue-500" 
+                        required
+                    />
+                </div>
+                <div className="mb-4">
+                    <label htmlFor="PhoneNumber" className="block font-semibold mb-2">Phone Number</label>
+                    <input 
+                        type="text" 
+                        id="PhoneNumber" 
+                        value={phoneNumber}
+                        onChange={(e) => setPhoneNumber(e.target.value)}
+                        className="border border-gray-400 p-2 rounded-md w-164 focus:ring focus:border-blue-500" 
+                        required
                     />
                 </div>
                 <div className="button-form w-164 flex justify-between mt-6">
-                    <button className='bg-green-600 hover:bg-green-700 text-white p-3 font-semibold text-lg w-80 cursor-pointer rounded-2xl'>Discard Changes</button>
+                    <button 
+                        onClick={(e) => {
+                            e.preventDefault()
+                            setFirstName('')
+                            setLastName('')
+                            setEmail('')
+                            setPhoneNumber('')
+                        }} 
+                        className='bg-green-600 hover:bg-green-700 text-white p-3 font-semibold text-lg w-80 cursor-pointer rounded-2xl'>
+                        Discard Changes
+                    </button>
                     <button className='bg-green-600 hover:bg-green-700 text-white p-3 font-semibold text-lg w-80 cursor-pointer rounded-2xl'>Save Changes</button>
                 </div>
             </form>
