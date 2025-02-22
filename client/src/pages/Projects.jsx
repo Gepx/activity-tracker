@@ -17,7 +17,7 @@ const Projects = () => {
   const navigate = useNavigate();
 
   function handleAddTask() {
-    navigate("/make-project");
+    navigate("/add-task");
   }
 
   const sections = [
