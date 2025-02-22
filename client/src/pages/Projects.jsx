@@ -9,9 +9,16 @@ import {
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import profileImage from "../assets/img/pooh.gif";
+import { useNavigate } from "react-router-dom";
 
 const Projects = () => {
   const [menuOpen, setMenuOpen] = useState(null);
+
+  const navigate = useNavigate();
+
+  function handleAddTask() {
+    navigate("/add-task");
+  }
 
   const sections = [
     {
@@ -132,6 +139,11 @@ const Projects = () => {
           <div className="flex items-center gap-1">
             <span className="text-pink-500 text-[10px]">●</span>
             <p className="text-[10px] font-bold text-gray-800">Close to due</p>
+          </div>
+          <div className="flex items-center justify-center gap-1 bg-blue-400 rounded-md w-24 h-8 cursor-pointer transition-all hover:bg-blue-500">
+            <button className="cursor-pointer" onClick={handleAddTask}>
+              Add Task
+            </button>
           </div>
         </div>
 

@@ -3,6 +3,7 @@ import AfterLoginNav from "./layouts/AfterLoginNav";
 import Dashboard from "./pages/Dashboard";
 import Calendar from "./pages/Calendar";
 import Projects from "./pages/Projects";
+import AddTask from "./pages/AddTask";
 
 export const router = createBrowserRouter([
   //   {
@@ -15,9 +16,13 @@ export const router = createBrowserRouter([
     element: <AfterLoginNav />,
     children: [
       { index: true, element: <Navigate to="/dashboard" /> },
-      { path: "/dashboard", element: <Dashboard /> },
-      { path: "/calendar", element: <Calendar /> },
-      { path: "/projects", element: <Projects /> },
+      { path: "dashboard", element: <Dashboard /> },
+      { path: "calendar", element: <Calendar /> },
+      {
+        path: "projects",
+        element: <Projects />,
+      },
+      { path: "add-task", element: <AddTask /> },
     ],
   },
 ]);
