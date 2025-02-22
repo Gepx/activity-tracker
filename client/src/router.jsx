@@ -3,7 +3,7 @@ import AfterLoginNav from "./layouts/AfterLoginNav";
 import Dashboard from "./pages/Dashboard";
 import Calendar from "./pages/Calendar";
 import Projects from "./pages/Projects";
-import MakeProject from "./pages/MakeProject";
+import AddTask from "./pages/AddTask";
 
 export const router = createBrowserRouter([
   //   {
@@ -22,7 +22,7 @@ export const router = createBrowserRouter([
         path: "projects",
         element: <Projects />,
       },
-      { path: "make-project", element: <MakeProject /> },
+      { path: "add-task", element: <AddTask /> },
     ],
   },
 ]);
