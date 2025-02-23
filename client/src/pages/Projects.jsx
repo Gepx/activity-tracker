@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBell,
   faCalendarDays,
+  faCaretDown,
   faClock,
   faPen,
   faSearch,
@@ -10,9 +11,11 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import profileImage from "../assets/img/pooh.gif";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Projects = () => {
   const [menuOpen, setMenuOpen] = useState(null);
+  const [sections, setSections] = useState([]);
 
   const navigate = useNavigate();
 
@@ -20,76 +23,125 @@ const Projects = () => {
     navigate("/add-task");
   }
 
-  const sections = [
-    {
-      title: "To-Do",
-      count: 4,
-      tasks: [
-        {
-          title: "Attendance Apps",
-          date: "Oct 3, 2020",
-          description: "Employee can confirm the attendance online.",
-          createdDate: "12 Feb 2025",
-          createdTime: "17:00",
-        },
-        {
-          title: "UI Food Apps",
-          date: "3 days left",
-          description: "No need to go to restaurant anymore, take it easy.",
-          createdDate: "11 Feb 2025",
-          createdTime: "14:00",
-        },
-        {
-          title: "Money Manager",
-          date: "Oct 27, 2020",
-          description: "Manage your money wisely, so you can be rich quickly.",
-          createdDate: "10 Feb 2025",
-          createdTime: "12:00",
-        },
-      ],
-    },
-    {
-      title: "In Progress",
-      count: 2,
-      tasks: [
-        {
-          title: "Thrifting Apps",
-          date: "1 day left",
-          description: "Buy thrift things and any secondhand in apps.",
-          createdDate: "10 Feb 2025",
-          createdTime: "12:00",
-        },
-        {
-          title: "Task Manager",
-          date: "Oct 28, 2020",
-          description:
-            "Manage your time to do your tasks, finish it one by one.",
-          createdDate: "10 Feb 2025",
-          createdTime: "12:00",
-        },
-      ],
-    },
-    {
-      title: "Review",
-      count: 10,
-      tasks: [
-        {
-          title: "Marketplace Apps",
-          date: "1 day left",
-          description: "Shopping from home, only scrolling your phone.",
-          createdDate: "10 Feb 2025",
-          createdTime: "12:00",
-        },
-        {
-          title: "Cashier Apps",
-          date: "Oct 20, 2020",
-          description: "Take the restaurant payment easily.",
-          createdDate: "10 Feb 2025",
-          createdTime: "12:00",
-        },
-      ],
-    },
-  ];
+  // const sections = [
+  //   {
+  //     title: "To-Do",
+  //     count: 4,
+  //     tasks: [
+  //       {
+  //         title: "Attendance Apps",
+  //         date: "Oct 3, 2020",
+  //         description: "Employee can confirm the attendance online.",
+  //         createdDate: "12 Feb 2025",
+  //         createdTime: "17:00",
+  //       },
+  //       {
+  //         title: "UI Food Apps",
+  //         date: "3 days left",
+  //         description: "No need to go to restaurant anymore, take it easy.",
+  //         createdDate: "11 Feb 2025",
+  //         createdTime: "14:00",
+  //       },
+  //       {
+  //         title: "Money Manager",
+  //         date: "Oct 27, 2020",
+  //         description: "Manage your money wisely, so you can be rich quickly.",
+  //         createdDate: "10 Feb 2025",
+  //         createdTime: "12:00",
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     title: "In Progress",
+  //     count: 2,
+  //     tasks: [
+  //       {
+  //         title: "Thrifting Apps",
+  //         date: "1 day left",
+  //         description: "Buy thrift things and any secondhand in apps.",
+  //         createdDate: "10 Feb 2025",
+  //         createdTime: "12:00",
+  //       },
+  //       {
+  //         title: "Task Manager",
+  //         date: "Oct 28, 2020",
+  //         description:
+  //           "Manage your time to do your tasks, finish it one by one.",
+  //         createdDate: "10 Feb 2025",
+  //         createdTime: "12:00",
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     title: "Review",
+  //     count: 10,
+  //     tasks: [
+  //       {
+  //         title: "Marketplace Apps",
+  //         date: "1 day left",
+  //         description: "Shopping from home, only scrolling your phone.",
+  //         createdDate: "10 Feb 2025",
+  //         createdTime: "12:00",
+  //       },
+  //       {
+  //         title: "Cashier Apps",
+  //         date: "Oct 20, 2020",
+  //         description: "Take the restaurant payment easily.",
+  //         createdDate: "10 Feb 2025",
+  //         createdTime: "12:00",
+  //       },
+  //     ],
+  //   },
+  // ];
+
+  const calculateDaysLeft = (deadlineDate) => {
+    if (!deadlineDate) return "No deadline"; // Handle tasks without a deadline
+
+    const today = new Date();
+    const deadline = new Date(deadlineDate);
+
+    const timeDiff = deadline - today; // Difference in milliseconds
+    const daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24)); // Convert to days
+
+    if (daysLeft < 0) return "Past due"; // If the deadline has passed
+    if (daysLeft === 0) return "Due today";
+    if (daysLeft === 1) return "1 day left";
+    return `${daysLeft} days left`;
+  };
+
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/api/get-tasks");
+
+        if (response.status === 200) {
+          console.log({ message: "Tasks fetched successfully", response });
+          const groupedTasks = response.data.reduce((acc, task) => {
+            const daysLeft = calculateDaysLeft(task.deadlineDate);
+            if (!acc[task.options]) {
+              acc[task.options] = {
+                option: task.options,
+                count: 0,
+                tasks: [],
+              };
+            }
+            acc[task.options].tasks.push({ ...task, daysLeft });
+            acc[task.options].count++;
+            return acc;
+          }, {});
+
+          // Convert grouped tasks object into an array
+          setSections(Object.values(groupedTasks));
+          // setSections(response.data);
+        }
+      } catch (error) {
+        console.log({ message: "Failed to fetch: ", error });
+      }
+    };
+
+    fetchTasks();
+  }, []);
+
   return (
     <div className="h-screen flex overflow-hidden font-poppins">
       <main className="flex-1 px-6 py-6 overflow-auto no-scrollbar">
@@ -153,8 +205,11 @@ const Projects = () => {
             <div key={index} className="w-[300px] min-w-[300px]">
               {/* Section Header */}
               <div className="flex items-center gap-2 mb-3">
-                <h2 className="text-md font-semibold">{section.title}</h2>
-                <span className="text-xs text-gray-500">({section.count})</span>
+                <h2 className="text-md font-semibold">{section.option}</h2>
+                <span className="text-xs text-gray-500">
+                  ({section.tasks.length})
+                </span>
+                <FontAwesomeIcon icon={faCaretDown} className="ml-2" />
               </div>
 
               {/* Task Cards */}
@@ -193,19 +248,27 @@ const Projects = () => {
                     </div>
 
                     {/* Date Badge */}
+                    {/* <span
+                    className={`px-2 py-1 text-xs font-medium rounded-lg inline-block ${
+                      section.date.includes("left")
+                        ? "bg-red-100 text-red-600"
+                        : "bg-blue-100 text-blue-600"
+                    }`}>
+                    {section.date}
+                  </span> */}
+
                     <span
                       className={`px-2 py-1 text-xs font-medium rounded-lg inline-block ${
-                        task.date.includes("left")
+                        task.daysLeft === "Due today" ||
+                        task.daysLeft === "1 day left"
                           ? "bg-red-100 text-red-600"
                           : "bg-blue-100 text-blue-600"
                       }`}>
-                      {task.date}
+                      {task.daysLeft}
                     </span>
 
                     {/* Description */}
-                    <p className="text-gray-600 text-sm mt-2">
-                      {task.description}
-                    </p>
+                    <p className="text-gray-600 text-sm mt-2">{task.desc}</p>
 
                     {/* Footer */}
 
@@ -214,10 +277,10 @@ const Projects = () => {
                       <div className="flex items-center  mt-3 gap-3 text-gray-500 text-xs">
                         <span>
                           <FontAwesomeIcon icon={faCalendarDays} />{" "}
-                          {task.createdDate}
+                          {task.createdAt}
                         </span>
                         <span>
-                          <FontAwesomeIcon icon={faClock} /> {task.createdTime}
+                          <FontAwesomeIcon icon={faClock} /> {task.createdAt}
                         </span>
                       </div>
                     </div>
