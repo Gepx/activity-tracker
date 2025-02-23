@@ -7,7 +7,7 @@ import axios from "axios";
 const AddTask = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    options: "TODO",
+    options: "To-Do",
     title: "",
     deadlineDate: "",
     desc: "",
@@ -63,9 +63,9 @@ const AddTask = () => {
               value={formData.options}
               onChange={handleChange}
               className="p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-400">
-              <option value="TODO">To-Do</option>
-              <option value="INPROGRESS">In Progress</option>
-              <option value="REVIEW">Review</option>
+              <option value="To-Do">To-Do</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Review">Review</option>
             </select>
           </div>
 
@@ -85,13 +85,13 @@ const AddTask = () => {
           </div>
 
           <div className="flex flex-col">
-            <label htmlFor="date" className="text-sm font-medium mb-1">
+            <label htmlFor="deadlineDate" className="text-sm font-medium mb-1">
               Deadline Date
             </label>
             <input
               type="datetime-local"
-              name="date"
-              id="date"
+              name="deadlineDate"
+              id="deadlineDate"
               value={formData.deadlineDate}
               onChange={handleChange}
               className="p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-400"
