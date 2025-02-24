@@ -1,27 +1,85 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { formatISO } from "date-fns";
+import axios from "axios";
 
 const Calendar = () => {
   const [events, setEvents] = useState([]);
 
-  const handleDateClick = (info) => {
-    const title = prompt("Enter event title:");
-    if (title) {
-      setEvents([...events, { title, start: info.date, allDay: true }]);
+  const fetchEvents = async () => {
+    try {
+      const response = await axios.get("http://localhost:3000/api/events");
+      setEvents(response.data);
+    } catch (error) {
+      console.log("Error fetching events", error);
     }
   };
 
-  const handleEventDrop = (info) => {
-    const updatedEvents = events.map((event) =>
-      event.title === info.event.title
-        ? { ...event, start: formatISO(info.event.start) }
-        : event
-    );
-    setEvents(updatedEvents);
+  useEffect(() => {
+    fetchEvents();
+  }, []);
+
+  const handleDateClick = async (info) => {
+    const title = prompt("Enter event title:");
+    if (title) {
+      const startTime = prompt(
+        "Enter start time (optional, format: YYYY-MM-DDTHH:MM):"
+      );
+      const endTime = prompt(
+        "Enter end time (optional, format: YYYY-MM-DDTHH:MM):"
+      );
+      const reminderTime = prompt(
+        "Need a reminder time? (optional, format: YYYY-MM-DDTHH:MM):"
+      );
+      try {
+        const response = await axios.post("http://localhost:3000/api/events", {
+          title,
+          startTime: startTime
+            ? new Date(startTime).toLocaleString("id-ID")
+            : null,
+          endTime: endTime ? new Date(endTime).toLocaleString("id-ID") : null,
+          reminderTime: reminderTime
+            ? new Date(reminderTime).toLocaleString("id-ID")
+            : null,
+        });
+        setEvents([...events, response.data]);
+
+        fetchEvents();
+      } catch (error) {
+        console.log("Error adding event", error);
+      }
+    }
+  };
+
+  const handleEventDrop = async (info) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:3000/api/events/${info.event.id}`,
+        { startTime: formatISO(info.event.start) }
+      );
+      const updatedEvents = events.map((event) =>
+        event._id === info.event.id ? response.data : event
+      );
+      setEvents(updatedEvents);
+    } catch (error) {
+      console.log("Error updating event", error);
+    }
+  };
+
+  const handleDeleteEvent = async (info) => {
+    try {
+      await axios.delete(`http://localhost:3000/api/events/${info.event.id}`);
+      const deletedEvents = events.filter(
+        (event) => event._id !== info.event.id
+      );
+      setEvents(deletedEvents);
+      fetchEvents();
+    } catch (error) {
+      console.log("Error deleting event", error);
+    }
   };
 
   return (
@@ -49,9 +107,11 @@ const Calendar = () => {
           aspectRatio={1.9}
           handleWindowResize={true}
           eventColor="#4F46E5"
-          dayCellClassNames={(info) =>
-            info.date.getDay() === 0 ? "bg-red-100 text-red-500" : ""
-          }
+          eventClick={(info) => {
+            if (window.confirm("Are you sure you want to delete this event?")) {
+              handleDeleteEvent(info);
+            }
+          }}
         />
       </main>
     </div>
