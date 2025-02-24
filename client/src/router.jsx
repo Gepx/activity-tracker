@@ -4,6 +4,7 @@ import Dashboard from "./pages/Dashboard";
 import Calendar from "./pages/Calendar";
 import Projects from "./pages/Projects";
 import AddTask from "./pages/AddTask";
+import EditTask from "./pages/EditTask";
 
 export const router = createBrowserRouter([
   //   {
@@ -23,6 +24,7 @@ export const router = createBrowserRouter([
         element: <Projects />,
       },
       { path: "add-task", element: <AddTask /> },
+      { path: "edit-task/:id", element: <EditTask /> },
     ],
   },
 ]);
