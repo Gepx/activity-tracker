@@ -4,12 +4,14 @@ const cors = require("cors");
 const app = express();
 
 const taskRoutes = require("./routes/task");
+const eventRoutes = require("./routes/event");
 
 app.use(cors());
 app.use(express.json());
 
 // Routes
 app.use("/api", taskRoutes);
+app.use("/api/events", eventRoutes);
 
 // db connection
 mongoose
