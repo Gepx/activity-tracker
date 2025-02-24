@@ -30,12 +30,6 @@ const Projects = () => {
       return;
     }
 
-    // const filteredInput = sections.flatMap((section) => {
-    //   section.tasks.filter((task) =>
-    //     task.title.toLowerCase().includes(inputValue)
-    //   );
-    // });
-
     const filteredInput = sections.reduce((acc, section) => {
       return acc.concat(
         section.tasks.filter((task) =>
@@ -63,77 +57,6 @@ const Projects = () => {
       [index]: !prev[index],
     }));
   };
-
-  // const sections = [
-  //   {
-  //     title: "To-Do",
-  //     count: 4,
-  //     tasks: [
-  //       {
-  //         title: "Attendance Apps",
-  //         date: "Oct 3, 2020",
-  //         description: "Employee can confirm the attendance online.",
-  //         createdDate: "12 Feb 2025",
-  //         createdTime: "17:00",
-  //       },
-  //       {
-  //         title: "UI Food Apps",
-  //         date: "3 days left",
-  //         description: "No need to go to restaurant anymore, take it easy.",
-  //         createdDate: "11 Feb 2025",
-  //         createdTime: "14:00",
-  //       },
-  //       {
-  //         title: "Money Manager",
-  //         date: "Oct 27, 2020",
-  //         description: "Manage your money wisely, so you can be rich quickly.",
-  //         createdDate: "10 Feb 2025",
-  //         createdTime: "12:00",
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     title: "In Progress",
-  //     count: 2,
-  //     tasks: [
-  //       {
-  //         title: "Thrifting Apps",
-  //         date: "1 day left",
-  //         description: "Buy thrift things and any secondhand in apps.",
-  //         createdDate: "10 Feb 2025",
-  //         createdTime: "12:00",
-  //       },
-  //       {
-  //         title: "Task Manager",
-  //         date: "Oct 28, 2020",
-  //         description:
-  //           "Manage your time to do your tasks, finish it one by one.",
-  //         createdDate: "10 Feb 2025",
-  //         createdTime: "12:00",
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     title: "Review",
-  //     count: 10,
-  //     tasks: [
-  //       {
-  //         title: "Marketplace Apps",
-  //         date: "1 day left",
-  //         description: "Shopping from home, only scrolling your phone.",
-  //         createdDate: "10 Feb 2025",
-  //         createdTime: "12:00",
-  //       },
-  //       {
-  //         title: "Cashier Apps",
-  //         date: "Oct 20, 2020",
-  //         description: "Take the restaurant payment easily.",
-  //         createdDate: "10 Feb 2025",
-  //         createdTime: "12:00",
-  //       },
-  //     ],
-  //   },
-  // ];
 
   const calculateDaysLeft = (deadlineDate) => {
     if (!deadlineDate) return "No deadline"; // Handle tasks without a deadline
@@ -197,6 +120,28 @@ const Projects = () => {
 
     fetchTasks();
   }, []);
+
+  const handleDeleteTask = async (id) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:3000/api/delete-tasks/${id}`
+      );
+      if (response.status === 200) {
+        console.log({ message: "Task deleted successfully", response });
+
+        setSections((prevSections) =>
+          prevSections
+            .map((section) => ({
+              ...section,
+              tasks: section.tasks.filter((task) => task._id !== id),
+            }))
+            .filter((section) => section.tasks.length > 0)
+        );
+      }
+    } catch (error) {
+      console.error({ message: "Error deleting task", error });
+    }
+  };
 
   return (
     <div className="h-screen flex overflow-hidden font-poppins">
@@ -313,14 +258,14 @@ const Projects = () => {
                                       <button
                                         className="flex items-center gap-2 w-full px-3 py-2 hover:bg-gray-100 cursor-pointer"
                                         onClick={() =>
-                                          console.log("Edit clicked")
+                                          navigate(`/edit-task/${task._id}`)
                                         }>
                                         <FontAwesomeIcon icon={faPen} /> Edit
                                       </button>
                                       <button
                                         className="flex items-center gap-2 w-full px-3 py-2 text-red-500 hover:bg-gray-100 cursor-pointer"
                                         onClick={() =>
-                                          console.log("Delete clicked")
+                                          handleDeleteTask(task._id)
                                         }>
                                         <FontAwesomeIcon icon={faTrash} />{" "}
                                         Delete
