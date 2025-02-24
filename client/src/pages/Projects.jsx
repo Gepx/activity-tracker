@@ -23,6 +23,10 @@ const Projects = () => {
     navigate("/add-task");
   }
 
+  const toggleMenu = (taskId) => {
+    setMenuOpen(menuOpen === taskId ? null : taskId);
+  };
+
   // const sections = [
   //   {
   //     title: "To-Do",
@@ -107,6 +111,21 @@ const Projects = () => {
     if (daysLeft === 0) return "Due today";
     if (daysLeft === 1) return "1 day left";
     return `${daysLeft} days left`;
+  };
+
+  const formatDateTime = (dateString) => {
+    const date = new Date(dateString);
+    return {
+      date: date.toLocaleDateString("id-ID", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      }),
+      time: date.toLocaleTimeString("id-ID", {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
+    };
   };
 
   useEffect(() => {
@@ -214,78 +233,71 @@ const Projects = () => {
 
               {/* Task Cards */}
               <div className="grid gap-4">
-                {section.tasks.map((task, idx) => (
-                  <div
-                    key={idx}
-                    className="bg-white p-4 rounded-lg shadow-md border border-gray-200 w-[300px] h-[159px]">
-                    {/* Title and Menu */}
-                    <div className="relative flex justify-between items-center">
-                      <h3 className="text-md font-medium">{task.title}</h3>
-                      <div>
-                        <button
-                          className="relative text-gray-500 cursor-pointer"
-                          onClick={() =>
-                            setMenuOpen(menuOpen === idx ? null : idx)
-                          }>
-                          ...
-                        </button>
-                        {/* Dropdown Menu */}
-                        {menuOpen === idx && (
-                          <div className="absolute right-0 top-8 bg-white border border-gray-200 shadow-lg rounded-md w-28 text-sm">
-                            <button
-                              className="flex items-center gap-2 w-full px-3 py-2 hover:bg-gray-100 cursor-pointer"
-                              onClick={() => console.log("Edit clicked")}>
-                              <FontAwesomeIcon icon={faPen} /> Edit
-                            </button>
-                            <button
-                              className="flex items-center gap-2 w-full px-3 py-2 text-red-500 hover:bg-gray-100 cursor-pointer"
-                              onClick={() => console.log("Delete clicked")}>
-                              <FontAwesomeIcon icon={faTrash} /> Delete
-                            </button>
-                          </div>
-                        )}
+                {section.tasks.map((task, idx) => {
+                  const { date, time } = formatDateTime(task.deadlineDate);
+
+                  return (
+                    <div
+                      key={idx}
+                      className="bg-white p-4 rounded-lg shadow-md border border-gray-200 w-[300px] h-full min-h-[160px] flex flex-col">
+                      {/* Title and Menu */}
+                      <div className="relative flex justify-between items-center">
+                        <h3 className="text-md font-medium">{task.title}</h3>
+                        <div>
+                          <button
+                            className="relative text-gray-500 cursor-pointer"
+                            onClick={() => toggleMenu(task._id)}>
+                            ...
+                          </button>
+                          {/* Dropdown Menu */}
+                          {menuOpen === task._id && (
+                            <div className="absolute right-0 top-8 bg-white border border-gray-200 shadow-lg rounded-md w-28 text-sm">
+                              <button
+                                className="flex items-center gap-2 w-full px-3 py-2 hover:bg-gray-100 cursor-pointer"
+                                onClick={() => console.log("Edit clicked")}>
+                                <FontAwesomeIcon icon={faPen} /> Edit
+                              </button>
+                              <button
+                                className="flex items-center gap-2 w-full px-3 py-2 text-red-500 hover:bg-gray-100 cursor-pointer"
+                                onClick={() => console.log("Delete clicked")}>
+                                <FontAwesomeIcon icon={faTrash} /> Delete
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      <span
+                        className={`w-fit px-2 py-1 text-xs font-medium rounded-lg inline-block ${
+                          task.daysLeft === "Due today" ||
+                          task.daysLeft === "1 day left"
+                            ? "bg-red-100 text-red-600"
+                            : "bg-blue-100 text-blue-600"
+                        }`}>
+                        {task.daysLeft}
+                      </span>
+
+                      {/* Description */}
+                      <p className="text-gray-600 text-sm mt-2 break-words truncate-multiline">
+                        {task.desc}
+                      </p>
+
+                      {/* Footer */}
+
+                      {/* Progress & Comments */}
+                      <div className="mt-auto">
+                        <div className="flex items-center  mt-3 gap-3 text-gray-500 text-xs">
+                          <span>
+                            <FontAwesomeIcon icon={faCalendarDays} /> {date}
+                          </span>
+                          <span>
+                            <FontAwesomeIcon icon={faClock} /> {time}
+                          </span>
+                        </div>
                       </div>
                     </div>
-
-                    {/* Date Badge */}
-                    {/* <span
-                    className={`px-2 py-1 text-xs font-medium rounded-lg inline-block ${
-                      section.date.includes("left")
-                        ? "bg-red-100 text-red-600"
-                        : "bg-blue-100 text-blue-600"
-                    }`}>
-                    {section.date}
-                  </span> */}
-
-                    <span
-                      className={`px-2 py-1 text-xs font-medium rounded-lg inline-block ${
-                        task.daysLeft === "Due today" ||
-                        task.daysLeft === "1 day left"
-                          ? "bg-red-100 text-red-600"
-                          : "bg-blue-100 text-blue-600"
-                      }`}>
-                      {task.daysLeft}
-                    </span>
-
-                    {/* Description */}
-                    <p className="text-gray-600 text-sm mt-2">{task.desc}</p>
-
-                    {/* Footer */}
-
-                    {/* Progress & Comments */}
-                    <div className="items-end">
-                      <div className="flex items-center  mt-3 gap-3 text-gray-500 text-xs">
-                        <span>
-                          <FontAwesomeIcon icon={faCalendarDays} />{" "}
-                          {task.createdAt}
-                        </span>
-                        <span>
-                          <FontAwesomeIcon icon={faClock} /> {task.createdAt}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           ))}
