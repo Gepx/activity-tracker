@@ -23,7 +23,7 @@ export const router = createBrowserRouter([
     path: "/success-login",
     element: <AfterLoginNav />,
     children: [
-      { index: true, element: <Navigate to="/dashboard" /> },
+      { index: true, element: <Navigate to="/success-login/dashboard" /> },
       { path: "/success-login/dashboard", element: <Dashboard /> },
       { path: "/success-login/calendar", element: <Calendar /> },
       {
