@@ -16,6 +16,7 @@ import axios from "axios";
 const Projects = () => {
   const [menuOpen, setMenuOpen] = useState(null);
   const [sections, setSections] = useState([]);
+  const [openDropDown, setOpenDropDown] = useState({});
 
   const navigate = useNavigate();
 
@@ -25,6 +26,13 @@ const Projects = () => {
 
   const toggleMenu = (taskId) => {
     setMenuOpen(menuOpen === taskId ? null : taskId);
+  };
+
+  const toggleDropDown = (index) => {
+    setOpenDropDown((prev) => ({
+      ...prev,
+      [index]: !prev[index],
+    }));
   };
 
   // const sections = [
@@ -228,77 +236,89 @@ const Projects = () => {
                 <span className="text-xs text-gray-500">
                   ({section.tasks.length})
                 </span>
-                <FontAwesomeIcon icon={faCaretDown} className="ml-2" />
+                <FontAwesomeIcon
+                  icon={faCaretDown}
+                  className="ml-2 cursor-pointer hover:text-gray-700"
+                  onClick={() => toggleDropDown(index)}
+                />
               </div>
 
-              {/* Task Cards */}
-              <div className="grid gap-4">
-                {section.tasks.map((task, idx) => {
-                  const { date, time } = formatDateTime(task.deadlineDate);
+              {openDropDown[index] && (
+                <>
+                  {/* Task Cards */}
+                  <div className="grid gap-4">
+                    {section.tasks.map((task, idx) => {
+                      const { date, time } = formatDateTime(task.deadlineDate);
 
-                  return (
-                    <div
-                      key={idx}
-                      className="bg-white p-4 rounded-lg shadow-md border border-gray-200 w-[300px] h-full min-h-[160px] flex flex-col">
-                      {/* Title and Menu */}
-                      <div className="relative flex justify-between items-center">
-                        <h3 className="text-md font-medium">{task.title}</h3>
-                        <div>
-                          <button
-                            className="relative text-gray-500 cursor-pointer"
-                            onClick={() => toggleMenu(task._id)}>
-                            ...
-                          </button>
-                          {/* Dropdown Menu */}
-                          {menuOpen === task._id && (
-                            <div className="absolute right-0 top-8 bg-white border border-gray-200 shadow-lg rounded-md w-28 text-sm">
+                      return (
+                        <div
+                          key={idx}
+                          className="bg-white p-4 rounded-lg shadow-md border border-gray-200 w-[300px] h-full min-h-[160px] flex flex-col">
+                          {/* Title and Menu */}
+                          <div className="relative flex justify-between items-center">
+                            <h3 className="text-md font-medium">
+                              {task.title}
+                            </h3>
+                            <div>
                               <button
-                                className="flex items-center gap-2 w-full px-3 py-2 hover:bg-gray-100 cursor-pointer"
-                                onClick={() => console.log("Edit clicked")}>
-                                <FontAwesomeIcon icon={faPen} /> Edit
+                                className="relative text-gray-500 cursor-pointer"
+                                onClick={() => toggleMenu(task._id)}>
+                                ...
                               </button>
-                              <button
-                                className="flex items-center gap-2 w-full px-3 py-2 text-red-500 hover:bg-gray-100 cursor-pointer"
-                                onClick={() => console.log("Delete clicked")}>
-                                <FontAwesomeIcon icon={faTrash} /> Delete
-                              </button>
+                              {/* Dropdown Menu */}
+                              {menuOpen === task._id && (
+                                <div className="absolute right-0 top-8 bg-white border border-gray-200 shadow-lg rounded-md w-28 text-sm">
+                                  <button
+                                    className="flex items-center gap-2 w-full px-3 py-2 hover:bg-gray-100 cursor-pointer"
+                                    onClick={() => console.log("Edit clicked")}>
+                                    <FontAwesomeIcon icon={faPen} /> Edit
+                                  </button>
+                                  <button
+                                    className="flex items-center gap-2 w-full px-3 py-2 text-red-500 hover:bg-gray-100 cursor-pointer"
+                                    onClick={() =>
+                                      console.log("Delete clicked")
+                                    }>
+                                    <FontAwesomeIcon icon={faTrash} /> Delete
+                                  </button>
+                                </div>
+                              )}
                             </div>
-                          )}
-                        </div>
-                      </div>
+                          </div>
 
-                      <span
-                        className={`w-fit px-2 py-1 text-xs font-medium rounded-lg inline-block ${
-                          task.daysLeft === "Due today" ||
-                          task.daysLeft === "1 day left"
-                            ? "bg-red-100 text-red-600"
-                            : "bg-blue-100 text-blue-600"
-                        }`}>
-                        {task.daysLeft}
-                      </span>
-
-                      {/* Description */}
-                      <p className="text-gray-600 text-sm mt-2 break-words truncate-multiline">
-                        {task.desc}
-                      </p>
-
-                      {/* Footer */}
-
-                      {/* Progress & Comments */}
-                      <div className="mt-auto">
-                        <div className="flex items-center  mt-3 gap-3 text-gray-500 text-xs">
-                          <span>
-                            <FontAwesomeIcon icon={faCalendarDays} /> {date}
+                          <span
+                            className={`w-fit px-2 py-1 text-xs font-medium rounded-lg inline-block ${
+                              task.daysLeft === "Due today" ||
+                              task.daysLeft === "1 day left"
+                                ? "bg-red-100 text-red-600"
+                                : "bg-blue-100 text-blue-600"
+                            }`}>
+                            {task.daysLeft}
                           </span>
-                          <span>
-                            <FontAwesomeIcon icon={faClock} /> {time}
-                          </span>
+
+                          {/* Description */}
+                          <p className="text-gray-600 text-sm mt-2 break-words truncate-multiline">
+                            {task.desc}
+                          </p>
+
+                          {/* Footer */}
+
+                          {/* Progress & Comments */}
+                          <div className="mt-auto">
+                            <div className="flex items-center  mt-3 gap-3 text-gray-500 text-xs">
+                              <span>
+                                <FontAwesomeIcon icon={faCalendarDays} /> {date}
+                              </span>
+                              <span>
+                                <FontAwesomeIcon icon={faClock} /> {time}
+                              </span>
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
+                      );
+                    })}
+                  </div>
+                </>
+              )}
             </div>
           ))}
         </div>
