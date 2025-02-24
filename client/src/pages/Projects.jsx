@@ -235,7 +235,7 @@ const Projects = () => {
                       {/* Task Cards */}
                       <div className="grid gap-4">
                         {section.tasks.map((task, idx) => {
-                          const { date, time } = formatDateTime(task.createdAt);
+                          const { date, time } = formatDateTime(task.updatedAt);
 
                           return (
                             <div
