@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBell,
@@ -17,6 +17,35 @@ const Projects = () => {
   const [menuOpen, setMenuOpen] = useState(null);
   const [sections, setSections] = useState([]);
   const [openDropDown, setOpenDropDown] = useState({});
+  const [filteredTasks, setFilteredTasks] = useState([]);
+  const inputRef = useRef();
+
+  const handleFilterInput = (e) => {
+    e.preventDefault();
+
+    const inputValue = inputRef.current.value.toLowerCase();
+
+    if (!inputValue) {
+      setFilteredTasks([]);
+      return;
+    }
+
+    // const filteredInput = sections.flatMap((section) => {
+    //   section.tasks.filter((task) =>
+    //     task.title.toLowerCase().includes(inputValue)
+    //   );
+    // });
+
+    const filteredInput = sections.reduce((acc, section) => {
+      return acc.concat(
+        section.tasks.filter((task) =>
+          task.title.toLowerCase().includes(inputValue)
+        )
+      );
+    }, []);
+
+    setFilteredTasks(filteredInput);
+  };
 
   const navigate = useNavigate();
 
@@ -180,18 +209,22 @@ const Projects = () => {
               Set your work on note and you won't forget it.
             </p>
           </div>
-          <div className="flex items-center gap-5   ">
-            <div className="relative w-full max-w-sm">
+          <div className="flex items-center gap-5">
+            <form
+              className="relative w-full max-w-sm"
+              onSubmit={handleFilterInput}>
               <input
                 type="text"
                 placeholder="Search something..."
                 className="w-58 pl-8 pr-10 py-2 text-xs rounded-xl bg-gray-200 border-none text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-400 font-poppins"
+                ref={inputRef}
+                onChange={handleFilterInput}
               />
               <FontAwesomeIcon
                 icon={faSearch}
                 className="absolute right-52 top-1/2 transform -translate-y-1/2 text-gray-500"
               />
-            </div>
+            </form>
             <FontAwesomeIcon icon={faBell} className="text-gray-500 text-lg" />
             <img
               src={profileImage}
@@ -228,99 +261,112 @@ const Projects = () => {
 
         {/* Tasks List Categories */}
         <div className="flex gap-6 mt-6">
-          {sections.map((section, index) => (
-            <div key={index} className="w-[300px] min-w-[300px]">
-              {/* Section Header */}
-              <div className="flex items-center gap-2 mb-3">
-                <h2 className="text-md font-semibold">{section.option}</h2>
-                <span className="text-xs text-gray-500">
-                  ({section.tasks.length})
-                </span>
-                <FontAwesomeIcon
-                  icon={faCaretDown}
-                  className="ml-2 cursor-pointer hover:text-gray-700"
-                  onClick={() => toggleDropDown(index)}
-                />
-              </div>
-
-              {openDropDown[index] && (
-                <>
-                  {/* Task Cards */}
-                  <div className="grid gap-4">
-                    {section.tasks.map((task, idx) => {
-                      const { date, time } = formatDateTime(task.deadlineDate);
-
-                      return (
-                        <div
-                          key={idx}
-                          className="bg-white p-4 rounded-lg shadow-md border border-gray-200 w-[300px] h-full min-h-[160px] flex flex-col">
-                          {/* Title and Menu */}
-                          <div className="relative flex justify-between items-center">
-                            <h3 className="text-md font-medium">
-                              {task.title}
-                            </h3>
-                            <div>
-                              <button
-                                className="relative text-gray-500 cursor-pointer"
-                                onClick={() => toggleMenu(task._id)}>
-                                ...
-                              </button>
-                              {/* Dropdown Menu */}
-                              {menuOpen === task._id && (
-                                <div className="absolute right-0 top-8 bg-white border border-gray-200 shadow-lg rounded-md w-28 text-sm">
-                                  <button
-                                    className="flex items-center gap-2 w-full px-3 py-2 hover:bg-gray-100 cursor-pointer"
-                                    onClick={() => console.log("Edit clicked")}>
-                                    <FontAwesomeIcon icon={faPen} /> Edit
-                                  </button>
-                                  <button
-                                    className="flex items-center gap-2 w-full px-3 py-2 text-red-500 hover:bg-gray-100 cursor-pointer"
-                                    onClick={() =>
-                                      console.log("Delete clicked")
-                                    }>
-                                    <FontAwesomeIcon icon={faTrash} /> Delete
-                                  </button>
-                                </div>
-                              )}
-                            </div>
-                          </div>
-
-                          <span
-                            className={`w-fit px-2 py-1 text-xs font-medium rounded-lg inline-block ${
-                              task.daysLeft === "Due today" ||
-                              task.daysLeft === "1 day left"
-                                ? "bg-red-100 text-red-600"
-                                : "bg-blue-100 text-blue-600"
-                            }`}>
-                            {task.daysLeft}
-                          </span>
-
-                          {/* Description */}
-                          <p className="text-gray-600 text-sm mt-2 break-words truncate-multiline">
-                            {task.desc}
-                          </p>
-
-                          {/* Footer */}
-
-                          {/* Progress & Comments */}
-                          <div className="mt-auto">
-                            <div className="flex items-center  mt-3 gap-3 text-gray-500 text-xs">
-                              <span>
-                                <FontAwesomeIcon icon={faCalendarDays} /> {date}
-                              </span>
-                              <span>
-                                <FontAwesomeIcon icon={faClock} /> {time}
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      );
-                    })}
+          {filteredTasks.length > 0
+            ? filteredTasks.map((task, idx) => (
+                <div
+                  key={idx}
+                  className="bg-white p-4 rounded-lg shadow-md border border-gray-200 w-[300px] h-full min-h-[160px] flex flex-col">
+                  <h3 className="text-md font-medium">{task.title}</h3>
+                  <p className="text-gray-600 text-sm mt-2">{task.desc}</p>
+                </div>
+              ))
+            : sections.map((section, index) => (
+                <div key={index} className="w-[300px] min-w-[300px]">
+                  {/* Section Header */}
+                  <div className="flex items-center gap-2 mb-3">
+                    <h2 className="text-md font-semibold">{section.option}</h2>
+                    <span className="text-xs text-gray-500">
+                      ({section.tasks.length})
+                    </span>
+                    <FontAwesomeIcon
+                      icon={faCaretDown}
+                      className="ml-2 cursor-pointer hover:text-gray-700"
+                      onClick={() => toggleDropDown(index)}
+                    />
                   </div>
-                </>
-              )}
-            </div>
-          ))}
+
+                  {openDropDown[index] && (
+                    <>
+                      {/* Task Cards */}
+                      <div className="grid gap-4">
+                        {section.tasks.map((task, idx) => {
+                          const { date, time } = formatDateTime(task.createdAt);
+
+                          return (
+                            <div
+                              key={idx}
+                              className="bg-white p-4 rounded-lg shadow-md border border-gray-200 w-[300px] h-full min-h-[160px] flex flex-col">
+                              {/* Title and Menu */}
+                              <div className="relative flex justify-between items-center">
+                                <h3 className="text-md font-medium">
+                                  {task.title}
+                                </h3>
+                                <div>
+                                  <button
+                                    className="relative text-gray-500 cursor-pointer"
+                                    onClick={() => toggleMenu(task._id)}>
+                                    ...
+                                  </button>
+                                  {/* Dropdown Menu */}
+                                  {menuOpen === task._id && (
+                                    <div className="absolute right-0 top-8 bg-white border border-gray-200 shadow-lg rounded-md w-28 text-sm">
+                                      <button
+                                        className="flex items-center gap-2 w-full px-3 py-2 hover:bg-gray-100 cursor-pointer"
+                                        onClick={() =>
+                                          console.log("Edit clicked")
+                                        }>
+                                        <FontAwesomeIcon icon={faPen} /> Edit
+                                      </button>
+                                      <button
+                                        className="flex items-center gap-2 w-full px-3 py-2 text-red-500 hover:bg-gray-100 cursor-pointer"
+                                        onClick={() =>
+                                          console.log("Delete clicked")
+                                        }>
+                                        <FontAwesomeIcon icon={faTrash} />{" "}
+                                        Delete
+                                      </button>
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+
+                              <span
+                                className={`w-fit px-2 py-1 text-xs font-medium rounded-lg inline-block ${
+                                  task.daysLeft === "Due today" ||
+                                  task.daysLeft === "1 day left"
+                                    ? "bg-red-100 text-red-600"
+                                    : "bg-blue-100 text-blue-600"
+                                }`}>
+                                {task.daysLeft}
+                              </span>
+
+                              {/* Description */}
+                              <p className="text-gray-600 text-sm mt-2 break-words truncate-multiline">
+                                {task.desc}
+                              </p>
+
+                              {/* Footer */}
+
+                              {/* Progress & Comments */}
+                              <div className="mt-auto">
+                                <div className="flex items-center  mt-3 gap-3 text-gray-500 text-xs">
+                                  <span>
+                                    <FontAwesomeIcon icon={faCalendarDays} />{" "}
+                                    {date}
+                                  </span>
+                                  <span>
+                                    <FontAwesomeIcon icon={faClock} /> {time}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </>
+                  )}
+                </div>
+              ))}
         </div>
       </main>
     </div>
