@@ -4,8 +4,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faGauge,
   faCalendarAlt,
-  faStar,
-  faUser,
   faCommentDots,
   faCog,
   faSignOutAlt,
@@ -18,9 +16,7 @@ const AfterLoginNav = () => {
   const navItems = [
     { name: "Dashboard", path: "/dashboard", icon: faGauge },
     { name: "Calendar", path: "/calendar", icon: faCalendarAlt },
-    { name: "Goals", path: "/goals", icon: faStar },
-    { name: "Tasks", path: "/tasks", icon: faTasks },
-    { name: "Member", path: "/chat-member", icon: faUser },
+    { name: "Projects", path: "/projects", icon: faTasks },
     { name: "Support", path: "/support", icon: faCommentDots },
     { name: "Settings", path: "/settings", icon: faCog },
   ];

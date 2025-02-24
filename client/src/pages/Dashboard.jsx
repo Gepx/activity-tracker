@@ -4,14 +4,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowRight,
   faCalendar,
+  faCalendarAlt,
+  faUserClock,
+  faEnvelope,
   faSearch,
 } from "@fortawesome/free-solid-svg-icons";
 import ReactECharts from "echarts-for-react";
-import Calendar from "react-calendar";
-import "react-calendar/dist/Calendar.css";
+import { DayPicker } from "react-day-picker";
+import "react-day-picker/style.css";
+
+import profileImage from "../assets/img/pooh.gif";
 
 const Dashboard = () => {
-  const [date, setDate] = useState(new Date());
+  const [selected, setSelected] = useState(new Date());
 
   const activityLevels = ["Terrible", "Bad", "Normal", "Great", "Amazing"];
 
@@ -77,7 +82,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="h-screen flex">
+    <div className="h-screen flex overflow-hidden font-poppins">
       {/* Main Content */}
       <main className="flex-1 border-r-2 border-gray-200 px-6 py-6">
         {/* Search Bar */}
@@ -97,13 +102,13 @@ const Dashboard = () => {
         <div className="py-6">
           <div className="flex flex-row items-center justify-between mb-0">
             <h3 className="text-lg font-bold">Activity Chart</h3>
-            <p>Hello</p>
+            <div className="flex items-center gap-2 px-3 py-1 border rounded-lg text-gray-700">
+              <FontAwesomeIcon icon={faCalendarAlt} className="text-sm" />
+              <span className="text-sm">Jun 08 - Jun 14</span>
+            </div>
           </div>
           <div className="w-full">
-            <ReactECharts
-              option={chartOptions}
-              // style={{ width: "600px", height: "240px" }}
-            />
+            <ReactECharts option={chartOptions} />
           </div>
         </div>
 
@@ -112,10 +117,11 @@ const Dashboard = () => {
           {/* Tasks */}
           <div className="w-1/2 bg-white shadow-md rounded-lg px-4 py-2">
             {/* Status */}
-            <div className="flex items-center gap-2">
-              <span className="text-yellow-500 text-lg">●</span>
-              <p className="text-sm font-bold text-yellow-500">In Progress</p>
-
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="text-yellow-500 text-lg">●</span>
+                <p className="text-sm font-bold text-yellow-500">In Progress</p>
+              </div>
               <input
                 type="checkbox"
                 className="w-5 h-5 border-gray-400 rounded-full focus:ring-2 focus:ring-blue-500 cursor-pointer"
@@ -153,10 +159,11 @@ const Dashboard = () => {
           {/* Goals */}
           <div className="w-1/2 bg-white shadow-md rounded-lg px-4 py-2">
             {/* Status */}
-            <div className="flex items-center gap-2">
-              <span className="text-yellow-500 text-lg">●</span>
-              <p className="text-sm font-bold text-yellow-500">In Progress</p>
-
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="text-yellow-500 text-lg">●</span>
+                <p className="text-sm font-bold text-yellow-500">In Progress</p>
+              </div>
               <input
                 type="checkbox"
                 className="w-5 h-5 border-gray-400 rounded-full focus:ring-2 focus:ring-blue-500 cursor-pointer"
@@ -194,17 +201,96 @@ const Dashboard = () => {
       </main>
 
       {/* Side for calender and profile */}
-      <aside className="w-[300px] px-6 py-6">
-        <div className="flex items-center gap-4">
-          <img
-            src="https://via.placeholder.com/50"
-            alt="Profile"
-            className="w-12 h-12 rounded-full"
-          />
-          <h2 className="text-lg font-semibold">User</h2>
+      <aside className="w-[320px] px-6 py-6">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <img
+              src={profileImage}
+              alt="Profile"
+              className="w-10 h-10 rounded-full border-2"
+            />
+            <h2 className="text-sm font-semibold">Egip Sinargo</h2>
+          </div>
+          <button className="bg-gray-200 rounded-full w-8 h-8 flex items-center justify-center cursor-pointer hover:bg-gray-300">
+            <FontAwesomeIcon icon={faEnvelope} className="btn" />
+          </button>
         </div>
         <div className="mt-6">
-          <Calendar onChange={setDate} value={date} className="w-full" />
+          <DayPicker
+            mode="single"
+            selected={selected}
+            onSelect={setSelected}
+            showOutsideDays
+            className="w-[300px] text-sm"
+            modifiersClassNames={{
+              selected: "bg-green-500 text-white rounded-full",
+              today: "font-bold text-gray-900",
+            }}
+            classNames={{
+              caption: "text-gray-700 font-medium",
+              head_cell: "text-gray-500",
+              day: "w-8 h-8 text-gray-700",
+              nav_button: "text-gray-700",
+            }}
+            // components={{
+            //   IconLeft: () => (
+            //     <FontAwesomeIcon icon={faArrowLeft} className="bg-amber-400" />
+            //   ),
+            //   IconRight: () => <FontAwesomeIcon icon={faArrowRight} />,
+            // }}
+          />
+        </div>
+
+        {/* Events */}
+        <div className="mt-6">
+          {/* Header Section */}
+          <div className="flex items-center justify-between">
+            <h3 className="text-lg font-bold">Upcoming Events</h3>
+            <button className="text-xs text-neutral-500 font-semibold hover:text-black transition cursor-pointer">
+              View All
+            </button>
+          </div>
+
+          {/* Events List */}
+          <div className="mt-4 space-y-4">
+            {/* Event Card */}
+            <div className="flex items-center gap-4 p-2 rounded-2xl shadow-md border border-gray-200 hover:bg-gray-100 transition cursor-pointer">
+              {/* Event Icon */}
+              <div className="w-12 h-12 bg-gray-300 rounded-lg"></div>
+
+              {/* Event Details */}
+              <div>
+                <h4 className="text-sm font-semibold">Team Meeting</h4>
+                <div className="flex items-center gap-2 text-xs text-gray-500">
+                  <FontAwesomeIcon icon={faCalendarAlt} />
+                  <p>27 Februari 2025</p>
+                </div>
+                <div className="flex items-center gap-2 text-xs text-gray-500">
+                  <FontAwesomeIcon icon={faUserClock} />
+                  <p>10:00 AM - 11:00 AM</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Another Event */}
+            <div className="flex items-center gap-4 p-2 rounded-2xl shadow-md border border-gray-200 hover:bg-gray-100 transition cursor-pointer">
+              {/* Event Icon */}
+              <div className="w-12 h-12 bg-gray-300 rounded-lg"></div>
+
+              {/* Event Details */}
+              <div>
+                <h4 className="text-sm font-semibold">Client Meeting</h4>
+                <div className="flex items-center gap-2 text-xs text-gray-500">
+                  <FontAwesomeIcon icon={faCalendarAlt} />
+                  <p>27 Februari 2025</p>
+                </div>
+                <div className="flex items-center gap-2 text-xs text-gray-500">
+                  <FontAwesomeIcon icon={faUserClock} />
+                  <p>10:00 AM - 11:00 AM</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </aside>
     </div>
