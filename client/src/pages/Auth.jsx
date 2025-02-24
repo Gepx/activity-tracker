@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import workout from "../assets/workout.jpg";
-import googleLogo from "../assets/google.png";
+import workout from "../assets/img/workout.jpg";
+import googleLogo from "../assets/img/google.png";
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);

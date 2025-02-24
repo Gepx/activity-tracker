@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 import LoginNav from "../layouts/LoginNav";
-import Carousel_1 from "../assets/carousel-1.jpg";
-import Carousel_2 from "../assets/Carousel-2.jpg";
+import Carousel_1 from "../assets/img/carousel-1.jpg";
+import Carousel_2 from "../assets/img/Carousel-2.jpg";
 
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);

@@ -1,5 +1,5 @@
 import React from "react";
-import logoIcon from "../assets/logo-icon.png";
+import logoIcon from "../assets/img/logo-icon.png";
 import { Link, Outlet } from "react-router-dom";
 
 const HomeNav = () => {
