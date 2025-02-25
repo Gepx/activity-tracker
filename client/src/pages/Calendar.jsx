@@ -4,13 +4,10 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import axios from "axios";
-import { formatISO, addHours, parseISO } from "date-fns";
+import { formatISO, parseISO } from "date-fns";
 
 const Calendar = () => {
   const [events, setEvents] = useState([]);
-
-  // Convert UTC time to UTC+7
-  const toUTC7 = (date) => addHours(parseISO(date), 7);
 
   // Fetch events from API
   const fetchEvents = async () => {
@@ -19,8 +16,8 @@ const Calendar = () => {
       const convertedEvents = response.data.map((event) => ({
         ...event,
         id: event._id,
-        start: toUTC7(event.startTime),
-        end: event.endTime ? toUTC7(event.endTime) : null,
+        start: parseISO(event.startTime),
+        end: event.endTime ? parseISO(event.endTime) : null,
       }));
       setEvents(convertedEvents);
     } catch (error) {
@@ -32,7 +29,7 @@ const Calendar = () => {
     fetchEvents();
   }, []);
 
-  const handleDateClick = async (info) => {
+  const handleDateClick = async () => {
     const title = prompt("Enter event title:");
     if (title) {
       const startTime = prompt("Enter start time (YYYY-MM-DDTHH:MM):");
@@ -44,12 +41,10 @@ const Calendar = () => {
       try {
         const newEvent = {
           title,
-          startTime: startTime
-            ? formatISO(addHours(new Date(startTime), -7))
-            : null,
-          endTime: endTime ? formatISO(addHours(new Date(endTime), -7)) : null,
+          startTime: startTime ? formatISO(new Date(startTime)) : null,
+          endTime: endTime ? formatISO(new Date(endTime), 7) : null,
           reminderTime: reminderTime
-            ? formatISO(addHours(new Date(reminderTime), -7))
+            ? formatISO(new Date(reminderTime), 7)
             : null,
         };
 
@@ -63,10 +58,32 @@ const Calendar = () => {
 
   const handleEventDrop = async (info) => {
     try {
-      const newStartTime = formatISO(addHours(info.event.start, -7));
+      const eventId = info.event.id;
 
-      await axios.put(`http://localhost:3000/api/events/${info.event.id}`, {
+      if (!eventId) {
+        console.error("Error: Event ID is missing!");
+        return;
+      }
+
+      const newStartTime = info.event.start.toISOString();
+
+      const droppedEvent = events.find((e) => e.id === eventId);
+      let newEndTime = null;
+
+      if (droppedEvent?.end) {
+        const originalDuration =
+          new Date(droppedEvent.end).getTime() -
+          new Date(droppedEvent.start).getTime();
+        newEndTime = new Date(
+          new Date(newStartTime).getTime() + originalDuration
+        ).toISOString();
+      }
+
+      console.log("Updating event:", { eventId, newStartTime, newEndTime });
+
+      await axios.put(`http://localhost:3000/api/events/${eventId}`, {
         startTime: newStartTime,
+        endTime: newEndTime,
       });
 
       fetchEvents(); // Refresh the calendar
@@ -99,6 +116,7 @@ const Calendar = () => {
     <div className="h-screen font-poppins overflow-hidden">
       <main className="flex-1 px-6 py-6 border-gray-200 overflow-auto no-scrollbar">
         <FullCalendar
+          timeZone="Asia/Jakarta"
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
           initialView="dayGridMonth"
           headerToolbar={{
