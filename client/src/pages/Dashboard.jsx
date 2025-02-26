@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -8,15 +8,19 @@ import {
   faUserClock,
   faEnvelope,
   faSearch,
+  faClock,
 } from "@fortawesome/free-solid-svg-icons";
 import ReactECharts from "echarts-for-react";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/style.css";
 
 import profileImage from "../assets/img/pooh.gif";
+import axios from "axios";
 
 const Dashboard = () => {
   const [selected, setSelected] = useState(new Date());
+  const [tasks, setTasks] = useState([]);
+  const [events, setEvents] = useState([]);
 
   const activityLevels = ["Terrible", "Bad", "Normal", "Great", "Amazing"];
 
@@ -81,6 +85,63 @@ const Dashboard = () => {
     ],
   };
 
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      const taskResponse = await axios.get(
+        "http://localhost:3000/api/get-tasks"
+      );
+
+      const formatTask = taskResponse.data.map((task) => ({
+        id: task._id,
+        options: task.options,
+        title: task.title,
+        date: new Date(task.deadlineDate).toLocaleDateString("id-ID", {
+          day: "2-digit",
+          month: "long",
+          year: "numeric",
+        }),
+        time: new Date(task.deadlineDate).toLocaleTimeString("id-ID", {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
+        desc: task.desc,
+      }));
+
+      const eventResponse = await axios.get("http://localhost:3000/api/events");
+      console.log(eventResponse.data);
+
+      const formatEvent = eventResponse.data.map((event) => ({
+        id: event._id,
+        title: event.title,
+        date: new Date(event.startTime).toLocaleDateString("id-ID", {
+          day: "2-digit",
+          month: "long",
+          year: "numeric",
+        }),
+        startTime: new Date(event.startTime).toLocaleTimeString("id-ID", {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
+        endTime: event.endTime
+          ? new Date(event.endTime).toLocaleTimeString("id-ID", {
+              hour: "2-digit",
+              minute: "2-digit",
+            })
+          : null,
+        reminderTime: event.reminderTime,
+      }));
+
+      setTasks(formatTask);
+      setEvents(formatEvent);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
   return (
     <div className="h-screen flex overflow-hidden font-poppins">
       {/* Main Content */}
@@ -115,88 +176,60 @@ const Dashboard = () => {
         {/* Tasks & Goals*/}
         <div className="flex flex-row gap-4">
           {/* Tasks */}
-          <div className="w-1/2 bg-white shadow-md rounded-lg px-4 py-2">
-            {/* Status */}
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <span className="text-yellow-500 text-lg">●</span>
-                <p className="text-sm font-bold text-yellow-500">In Progress</p>
+          {tasks.length > 0 ? (
+            tasks.slice(0, 2).map((task) => (
+              <div
+                key={task.id}
+                className="w-1/2 bg-white shadow-md rounded-lg px-4 py-2">
+                {/* Status */}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="text-yellow-500 text-lg">●</span>
+                    <p className="text-sm font-bold text-yellow-500">
+                      {task.options}
+                    </p>
+                  </div>
+                  <input
+                    type="checkbox"
+                    className="w-5 h-5 border-gray-400 rounded-full focus:ring-2 focus:ring-blue-500 cursor-pointer"
+                  />
+                </div>
+
+                {/* Task Title */}
+                <h4 className="text-sm font-semibold text-gray-800">
+                  {task.title}
+                </h4>
+
+                {/* Description (Truncated if long) */}
+                <p className="text-gray-600 text-sm mt-2 truncate w-[250px]">
+                  {task.desc}
+                </p>
+
+                {/* Date + View Task */}
+                <div className="flex justify-between items-center text-gray-500 text-sm mt-3">
+                  {/* Date */}
+                  <div className="flex items-center gap-1">
+                    <FontAwesomeIcon
+                      icon={faCalendar}
+                      className="text-[10px]"
+                    />
+                    <span className="text-[10px]">{task.date}</span>{" "}
+                    <FontAwesomeIcon icon={faClock} className="text-[10px]" />
+                    <span className="text-[10px]">{task.time}</span>
+                  </div>
+
+                  {/* View Task */}
+                  <Link
+                    to={`/calendar`}
+                    className="text-blue-500 font-semibold flex items-center gap-1 hover:underline">
+                    View <FontAwesomeIcon icon={faArrowRight} />
+                  </Link>
+                </div>
               </div>
-              <input
-                type="checkbox"
-                className="w-5 h-5 border-gray-400 rounded-full focus:ring-2 focus:ring-blue-500 cursor-pointer"
-              />
-            </div>
-
-            {/* Task Title */}
-            <h4 className="text-sm font-semibold text-gray-800">
-              Website Development Project - Activity Tracking
-            </h4>
-
-            {/* Description (Truncated if long) */}
-            <p className="text-gray-600 text-sm mt-2 truncate w-[250px]">
-              Tracking team activities and monitoring daily progress to ensure
-              project completion...
-            </p>
-
-            {/* Date + View Task */}
-            <div className="flex justify-between items-center text-gray-500 text-sm mt-3">
-              {/* Date */}
-              <div className="flex items-center gap-1">
-                <FontAwesomeIcon icon={faCalendar} />
-                <span>Nov 10</span>
-              </div>
-
-              {/* View Task */}
-              <Link
-                to="/tasks"
-                className="text-blue-500 font-semibold flex items-center gap-1 hover:underline">
-                View <FontAwesomeIcon icon={faArrowRight} />
-              </Link>
-            </div>
-          </div>
-
-          {/* Goals */}
-          <div className="w-1/2 bg-white shadow-md rounded-lg px-4 py-2">
-            {/* Status */}
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <span className="text-yellow-500 text-lg">●</span>
-                <p className="text-sm font-bold text-yellow-500">In Progress</p>
-              </div>
-              <input
-                type="checkbox"
-                className="w-5 h-5 border-gray-400 rounded-full focus:ring-2 focus:ring-blue-500 cursor-pointer"
-              />
-            </div>
-
-            {/* Task Title */}
-            <h4 className="text-sm font-semibold text-gray-800">
-              Website Development Project - Activity Tracking
-            </h4>
-
-            {/* Description (Truncated if long) */}
-            <p className="text-gray-600 text-sm mt-2 truncate w-[250px]">
-              Tracking team activities and monitoring daily progress to ensure
-              project completion...
-            </p>
-
-            {/* Date + View Task */}
-            <div className="flex justify-between items-center text-gray-500 text-sm mt-3">
-              {/* Date */}
-              <div className="flex items-center gap-1">
-                <FontAwesomeIcon icon={faCalendar} />
-                <span>Nov 10</span>
-              </div>
-
-              {/* View Task */}
-              <Link
-                to="/tasks"
-                className="text-blue-500 font-semibold flex items-center gap-1 hover:underline">
-                View <FontAwesomeIcon icon={faArrowRight} />
-              </Link>
-            </div>
-          </div>
+            ))
+          ) : (
+            <p>No Task.</p>
+          )}
         </div>
       </main>
 
@@ -254,42 +287,33 @@ const Dashboard = () => {
           {/* Events List */}
           <div className="mt-4 space-y-4">
             {/* Event Card */}
-            <div className="flex items-center gap-4 p-2 rounded-2xl shadow-md border border-gray-200 hover:bg-gray-100 transition cursor-pointer">
-              {/* Event Icon */}
-              <div className="w-12 h-12 bg-gray-300 rounded-lg"></div>
+            {events.length > 0 ? (
+              events.map((event) => (
+                <div
+                  key={event.id}
+                  className="flex items-center gap-4 p-2 rounded-2xl shadow-md border border-gray-200 hover:bg-gray-100 transition cursor-pointer">
+                  {/* Event Icon */}
+                  <div className="w-12 h-12 bg-gray-300 rounded-lg"></div>
 
-              {/* Event Details */}
-              <div>
-                <h4 className="text-sm font-semibold">Team Meeting</h4>
-                <div className="flex items-center gap-2 text-xs text-gray-500">
-                  <FontAwesomeIcon icon={faCalendarAlt} />
-                  <p>27 Februari 2025</p>
+                  {/* Event Details */}
+                  <div>
+                    <h4 className="text-sm font-semibold">{event.title}</h4>
+                    <div className="flex items-center gap-2 text-xs text-gray-500">
+                      <FontAwesomeIcon icon={faCalendarAlt} />
+                      <p>{event.date}</p>
+                    </div>
+                    <div className="flex items-center gap-2 text-xs text-gray-500">
+                      <FontAwesomeIcon icon={faUserClock} />
+                      <p>
+                        {event.startTime} - {event.endTime}
+                      </p>
+                    </div>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2 text-xs text-gray-500">
-                  <FontAwesomeIcon icon={faUserClock} />
-                  <p>10:00 AM - 11:00 AM</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Another Event */}
-            <div className="flex items-center gap-4 p-2 rounded-2xl shadow-md border border-gray-200 hover:bg-gray-100 transition cursor-pointer">
-              {/* Event Icon */}
-              <div className="w-12 h-12 bg-gray-300 rounded-lg"></div>
-
-              {/* Event Details */}
-              <div>
-                <h4 className="text-sm font-semibold">Client Meeting</h4>
-                <div className="flex items-center gap-2 text-xs text-gray-500">
-                  <FontAwesomeIcon icon={faCalendarAlt} />
-                  <p>27 Februari 2025</p>
-                </div>
-                <div className="flex items-center gap-2 text-xs text-gray-500">
-                  <FontAwesomeIcon icon={faUserClock} />
-                  <p>10:00 AM - 11:00 AM</p>
-                </div>
-              </div>
-            </div>
+              ))
+            ) : (
+              <p className="text-sm text-gray-500">No upcoming events.</p>
+            )}
           </div>
         </div>
       </aside>
