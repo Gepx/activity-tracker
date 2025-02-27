@@ -16,73 +16,143 @@ import "react-day-picker/style.css";
 
 import profileImage from "../assets/img/pooh.gif";
 import axios from "axios";
+import RangePickerModal from "./RangePickerModal";
 
 const Dashboard = () => {
   const [selected, setSelected] = useState(new Date());
   const [tasks, setTasks] = useState([]);
   const [events, setEvents] = useState([]);
 
-  const activityLevels = ["Terrible", "Bad", "Normal", "Great", "Amazing"];
+  const [chartRange, setChartRange] = useState({
+    from: new Date(),
+    to: new Date(new Date().setDate(new Date().getDate() + 6)),
+  });
+  const [showRangePicker, setShowRangePicker] = useState(false);
+  const [tempRange, setTempRange] = useState(null);
 
-  const chartOptions = {
-    grid: {
-      left: "0.9%", // Remove left gap
-      right: "0.99%", // Remove right gap
-      top: "10%",
-      bottom: "10%",
-      containLabel: true, // Ensure labels are inside the chart
-    },
-    xAxis: {
-      type: "category",
-      data: ["8", "9", "10", "11", "12", "13", "14"],
-      boundaryGap: false, // Ensures line touches edges
-      axisLine: { show: false },
-      axisTick: { show: false },
-      splitLine: { show: false },
-    },
-    yAxis: {
-      type: "category", // Change from value to category
-      data: activityLevels, // Reverse order to match UI
-      axisLine: { show: false },
-      axisTick: { show: false },
-      splitLine: {
-        show: true,
-        lineStyle: { type: "dashed", color: "#E0E0E0" },
+  const getDatesInRange = (startDate, endDate) => {
+    const dates = [];
+    let currentDate = new Date(startDate);
+
+    while (currentDate <= endDate) {
+      dates.push(new Date(currentDate));
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+    return dates;
+  };
+
+  const countActivities = (tasks, events, datesInRange) => {
+    const counts = {};
+
+    // Initialize counts
+    datesInRange.forEach((date) => {
+      const key = date.toISOString().split("T")[0];
+      counts[key] = 0;
+    });
+
+    // Count tasks
+    tasks.forEach((task) => {
+      try {
+        const taskDate = new Date(task.deadlineDate);
+        if (!isNaN(taskDate)) {
+          const isoDate = taskDate.toISOString().split("T")[0];
+          if (counts[isoDate] !== undefined) counts[isoDate]++;
+        }
+      } catch (e) {
+        console.warn("Invalid task date:", task.deadlineDate);
+      }
+    });
+
+    // Count events
+    events.forEach((event) => {
+      try {
+        const eventDate = new Date(event.startTime);
+        if (!isNaN(eventDate)) {
+          const isoDate = eventDate.toISOString().split("T")[0];
+          if (counts[isoDate] !== undefined) counts[isoDate]++;
+        }
+      } catch (e) {
+        console.warn("Invalid event date:", event.startTime);
+      }
+    });
+
+    return counts;
+  };
+
+  const chartOptions = (activityCounts, datesInRange) => {
+    const activityLevels = ["Terrible", "Bad", "Normal", "Great", "Amazing"];
+    return {
+      grid: {
+        left: "0.9%", // Remove left gap
+        right: "0.99%", // Remove right gap
+        top: "10%",
+        bottom: "10%",
+        containLabel: true, // Ensure labels are inside the chart
       },
-    },
-    tooltip: {
-      trigger: "axis",
-      formatter: (params) => {
-        const date = `June ${params[0].name}, 2022`;
-        const activity = activityLevels[params[0].value];
-        return `${date}<br /><strong>${activity} activity</strong>`;
+      xAxis: {
+        type: "category",
+        data: datesInRange.map((d) => d.getDate().toString()),
+        boundaryGap: false, // Ensures line touches edges
+        axisLine: { show: false },
+        axisTick: { show: false },
+        splitLine: { show: false },
       },
-    },
-    series: [
-      {
-        data: [1, 4, 3, 3, 2, 2, 4], // Map values to mood levels
-        type: "line",
-        smooth: true,
-        symbolSize: 6,
-        lineStyle: {
-          width: 3,
-          color: "#FF6B8B", // Light pink
+      yAxis: {
+        type: "category", // Change from value to category
+        data: activityLevels,
+        axisLine: { show: false },
+        axisTick: { show: false },
+        splitLine: {
+          show: true,
+          lineStyle: { type: "dashed", color: "#E0E0E0" },
         },
-        areaStyle: {
-          color: {
-            type: "linear",
-            x: 0,
-            y: 0,
-            x2: 0,
-            y2: 1,
-            colorStops: [
-              { offset: 0, color: "rgba(255, 107, 139, 0.5)" },
-              { offset: 1, color: "rgba(255, 107, 139, 0)" },
-            ],
+      },
+      tooltip: {
+        trigger: "axis",
+        formatter: (params) => {
+          const day = params[0].name;
+          const date = datesInRange.find((d) => d.getDate().toString() === day);
+          const count = activityCounts[date.toISOString().split("T")[0]] || 0;
+          const activityLevel =
+            activityLevels[Math.min(Math.floor(count / 2), 4)];
+          return `
+            ${date.toLocaleDateString("en-US", {
+              month: "short",
+              day: "numeric",
+            })}<br/>
+            <strong>${count} activities (${activityLevel})</strong>
+          `;
+        },
+      },
+      series: [
+        {
+          data: datesInRange.map((date) => {
+            const count = activityCounts[date.toISOString().split("T")[0]] || 0;
+            return Math.min(Math.floor(count / 2), 4);
+          }), // Map values to mood levels
+          type: "line",
+          smooth: true,
+          symbolSize: 6,
+          lineStyle: {
+            width: 3,
+            color: "#FF6B8B", // Light pink
+          },
+          areaStyle: {
+            color: {
+              type: "linear",
+              x: 0,
+              y: 0,
+              x2: 0,
+              y2: 1,
+              colorStops: [
+                { offset: 0, color: "rgba(255, 107, 139, 0.5)" },
+                { offset: 1, color: "rgba(255, 107, 139, 0)" },
+              ],
+            },
           },
         },
-      },
-    ],
+      ],
+    };
   };
 
   useEffect(() => {
@@ -99,6 +169,7 @@ const Dashboard = () => {
         id: task._id,
         options: task.options,
         title: task.title,
+        deadlineDate: new Date(task.deadlineDate),
         date: new Date(task.deadlineDate).toLocaleDateString("id-ID", {
           day: "2-digit",
           month: "long",
@@ -117,6 +188,7 @@ const Dashboard = () => {
       const formatEvent = eventResponse.data.map((event) => ({
         id: event._id,
         title: event.title,
+        startTimeDate: new Date(event.startTime),
         date: new Date(event.startTime).toLocaleDateString("id-ID", {
           day: "2-digit",
           month: "long",
@@ -163,13 +235,45 @@ const Dashboard = () => {
         <div className="py-6">
           <div className="flex flex-row items-center justify-between mb-0">
             <h3 className="text-lg font-bold">Activity Chart</h3>
-            <div className="flex items-center gap-2 px-3 py-1 border rounded-lg text-gray-700">
+            <div
+              className="flex items-center gap-2 px-3 py-1 border rounded-lg text-gray-700 cursor-pointer hover:bg-gray-50"
+              onClick={() => setShowRangePicker(true)}>
               <FontAwesomeIcon icon={faCalendarAlt} className="text-sm" />
-              <span className="text-sm">Jun 08 - Jun 14</span>
+              <span className="text-sm">
+                {chartRange.from.toLocaleDateString("id-ID", {
+                  month: "short",
+                  day: "numeric",
+                })}{" "}
+                -{" "}
+                {chartRange.to.toLocaleDateString("id-ID", {
+                  month: "short",
+                  day: "numeric",
+                })}
+              </span>
             </div>
+            {showRangePicker && (
+              <RangePickerModal
+                tempRange={tempRange}
+                chartRange={chartRange}
+                setTempRange={setTempRange}
+                setChartRange={setChartRange}
+                setShowRangePicker={setShowRangePicker}
+              />
+            )}
           </div>
           <div className="w-full">
-            <ReactECharts option={chartOptions} />
+            {chartRange.from && chartRange.to && (
+              <ReactECharts
+                option={chartOptions(
+                  countActivities(
+                    tasks,
+                    events,
+                    getDatesInRange(chartRange.from, chartRange.to)
+                  ),
+                  getDatesInRange(chartRange.from, chartRange.to)
+                )}
+              />
+            )}
           </div>
         </div>
 
