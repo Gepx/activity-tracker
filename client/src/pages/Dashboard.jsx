@@ -241,13 +241,13 @@ const Dashboard = () => {
               <FontAwesomeIcon icon={faCalendarAlt} className="text-sm" />
               <span className="text-sm">
                 {chartRange.from.toLocaleDateString("id-ID", {
-                  month: "short",
                   day: "numeric",
+                  month: "short",
                 })}{" "}
                 -{" "}
                 {chartRange.to.toLocaleDateString("id-ID", {
-                  month: "short",
                   day: "numeric",
+                  month: "short",
                 })}
               </span>
             </div>
