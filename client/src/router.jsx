@@ -9,6 +9,7 @@ import Calendar from "./pages/Calendar";
 import Projects from "./pages/Projects";
 import AddTask from "./pages/AddTask";
 import EditTask from "./pages/EditTask";
+import Support from "./pages/Support";
 
 export const router = createBrowserRouter([
   {
@@ -32,6 +33,7 @@ export const router = createBrowserRouter([
       },
       { path: "/success-login/add-task", element: <AddTask /> },
       { path: "/success-login/edit-task/:id", element: <EditTask /> },
+      { path: "/success-login/support", element: <Support /> },
     ],
   },
   // {
