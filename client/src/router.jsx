@@ -20,7 +20,6 @@ export const router = createBrowserRouter([
       { index: true, element: <Navigate to="/dashboard" /> },
       { path: "dashboard", element: <Dashboard /> },
       { path: "settings", element: <Settings /> },
-
       { path: "calendar", element: <Calendar /> },
       {
         path: "projects",
@@ -31,3 +30,5 @@ export const router = createBrowserRouter([
     ],
   },
 ]);
+
+export default router;
