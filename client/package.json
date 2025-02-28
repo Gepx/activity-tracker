@@ -25,10 +25,6 @@
     "echarts-for-react": "^3.0.2",
     "lucide-react": "^0.475.0",
     "react": "^19.0.0",
-<<<<<<< HEAD:package.json
-    "react-calendar": "^5.1.0",
-=======
->>>>>>> login-page:client/package.json
     "react-day-picker": "^9.5.1",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.1.5",
