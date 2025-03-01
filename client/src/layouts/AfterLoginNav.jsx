@@ -14,11 +14,11 @@ const AfterLoginNav = () => {
   const location = useLocation();
 
   const navItems = [
-    { name: "Dashboard", path: "/dashboard", icon: faGauge },
-    { name: "Calendar", path: "/calendar", icon: faCalendarAlt },
-    { name: "Projects", path: "/projects", icon: faTasks },
-    { name: "Support", path: "/support", icon: faCommentDots },
-    { name: "Settings", path: "/settings", icon: faCog },
+    { name: "Dashboard", path: "/success-login/dashboard", icon: faGauge },
+    { name: "Calendar", path: "/success-login/calendar", icon: faCalendarAlt },
+    { name: "Projects", path: "/success-login/projects", icon: faTasks },
+    { name: "Support", path: "/success-login/support", icon: faCommentDots },
+    { name: "Settings", path: "/success-login/settings", icon: faCog },
   ];
 
   return (
@@ -63,7 +63,9 @@ const AfterLoginNav = () => {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1"> {/* remove padding */}
+      <main className="flex-1">
+        {" "}
+        {/* remove padding */}
         <Outlet />
       </main>
     </div>
