@@ -5,6 +5,8 @@ const app = express();
 
 const taskRoutes = require("./routes/task");
 const eventRoutes = require("./routes/event");
+const contactRoutes = require("./routes/contact");
+const testimonialRoutes = require("./routes/testimonials");
 
 app.use(cors());
 app.use(express.json());
@@ -12,6 +14,8 @@ app.use(express.json());
 // Routes
 app.use("/api", taskRoutes);
 app.use("/api/events", eventRoutes);
+app.use("/api/contacts", contactRoutes);
+app.use("/api/testimonials", testimonialRoutes);
 
 // db connection
 mongoose
