@@ -5,7 +5,6 @@ import {
   faUserGear,
   faCreditCard,
   faShieldHalved,
-  faQuestionCircle,
   faChevronDown,
   faComments,
   faBook,
