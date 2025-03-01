@@ -54,7 +54,7 @@ const AfterLoginNav = () => {
         {/* Logout Button */}
         <div className="mt-10">
           <Link
-            to="/logout"
+            to="/auth"
             className="flex items-center space-x-3 text-red-400 hover:text-red-500">
             <FontAwesomeIcon icon={faSignOutAlt} />
             <span>Logout</span>
