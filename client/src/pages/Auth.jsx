@@ -1,9 +1,20 @@
 import React, { useState } from "react";
 import workout from "../assets/img/workout.jpg";
 import googleLogo from "../assets/img/google.png";
+import { useNavigate } from "react-router-dom";
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
+  const navigate = useNavigate();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (isLogin) {
+      navigate("/success-login/dashboard");
+    }
+  };
+
   return (
     <div className="h-screen flex items-center justify-center font-poppins">
       <div className="bg-white shadow-lg rounded-2xl flex w-full max-w-4xl h-[80vh] overflow-hidden mt-12">
@@ -17,7 +28,7 @@ const Auth = () => {
           </h2>
 
           {/* Auth Form */}
-          <form className="space-y-3">
+          <form className="space-y-3" onSubmit={handleSubmit}>
             {!isLogin && (
               <div>
                 <label className="block text-xs font-medium text-gray-700">
