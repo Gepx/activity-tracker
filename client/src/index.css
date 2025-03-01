@@ -24,6 +24,24 @@
   }
 }
 
+@layer components {
+  .bg-theme-blue {
+    @apply bg-blue-500 hover:ring-blue-500;
+  }
+  .bg-theme-green {
+    @apply bg-green-500 hover:ring-green-500;
+  }
+  .bg-theme-purple {
+    @apply bg-purple-500 hover:ring-purple-500;
+  }
+  .bg-theme-red {
+    @apply bg-red-500 hover:ring-red-500;
+  }
+  .bg-theme-yellow {
+    @apply bg-yellow-500 hover:ring-yellow-500;
+  }
+}
+
 .font-poppins {
   font-family: var(--font-poppins);
 }
