@@ -53,7 +53,7 @@ const AppearanceSettings = () => {
                 Adjust the base font size
               </p>
             </div>
-            <select className="form-select rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+            <select className={`form-select rounded-md ${theme === "dark" ? "dark:border-gray-600 dark:bg-gray-700 dark:text-white" : "border-gray-300"}`}>
               <option>Small</option>
               <option>Medium</option>
               <option>Large</option>
