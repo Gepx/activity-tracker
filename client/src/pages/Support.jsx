@@ -11,8 +11,10 @@ import {
   faGear,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useTheme } from '../context/ThemeContext'
 
 const Support = () => {
+  const {theme} = useTheme()
   const [searchQuery, setSearchQuery] = useState("");
   const [activeQuestion, setActiveQuestion] = useState(null);
 
@@ -81,7 +83,7 @@ const Support = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 overflow-y-auto h-[calc(100vh-10rem)] no-scrollbar">
+    <div className={`min-h-screen ${theme === "dark" ? "bg-gray-900 text-white" : "bg-gray-50 text-black"} overflow-y-auto h-[calc(100vh-10rem)] no-scrollbar`}>
       {/* Hero Section with Search */}
       <div className="relative bg-gradient-to-r from-blue-600 to-blue-700 dark:from-blue-800 dark:to-blue-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center">
@@ -139,7 +141,7 @@ const Support = () => {
       {/* FAQ Section */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+          <h2 className={`text-3xl font-bold ${theme === "dark" ? "text-gray-900 dark:text-white" : "text-black"} mb-4`}>
             Frequently Asked Questions
           </h2>
           <p className="text-gray-600 dark:text-gray-400">
@@ -177,10 +179,10 @@ const Support = () => {
       </div>
 
       {/* Additional Help Section */}
-      <div className="bg-gray-100 dark:bg-gray-800">
+      <div className={`${theme === "dark" ? "bg-gray-100 dark:bg-gray-800" : null}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+            <h2 className={`text-3xl font-bold ${theme === "dark" ? "text-gray-900 dark:text-white" : "text-black"} mb-4`}>
               Still Need Help?
             </h2>
             <p className="text-gray-600 dark:text-gray-400">

@@ -16,9 +16,9 @@ const AppearanceSettings = () => {
         </h2>
 
         {/* Theme Toggle */}
-        <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+        <div className={`flex items-center justify-between p-4 ${theme === "dark" ? "dark:bg-gray-800" : "bg-gray-100"} rounded-lg`}>
           <div>
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white">
+            <h3 className={`text-lg font-medium ${theme === "dark" ? "dark:text-white" : "text-gray-900"}`}>
               Dark Mode
             </h3>
             <p className="text-gray-500 dark:text-gray-400">
@@ -44,9 +44,9 @@ const AppearanceSettings = () => {
           Font Settings
         </h3>
         <div className="grid gap-4">
-          <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+          <div className={`flex items-center justify-between p-4 ${theme === "dark" ? "dark:bg-gray-800" : "bg-gray-100"} rounded-lg`}>
             <div>
-              <p className="font-medium text-gray-900 dark:text-white">
+              <p className={`font-medium ${theme === "dark" ? "dark:text-white" : "text-gray-900"}`}>
                 Font Size
               </p>
               <p className="text-sm text-gray-500 dark:text-gray-400">
@@ -68,8 +68,8 @@ const AppearanceSettings = () => {
           Color Customization
         </h3>
         <div className="grid gap-4">
-          <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-            <p className="font-medium text-gray-900 dark:text-white mb-3">
+          <div className={`p-4 ${theme === "dark" ? "dark:bg-gray-800" : "bg-gray-100"} rounded-lg`}>
+            <p className={`font-medium ${theme === "dark" ? "dark:text-white" : "text-gray-900"} mb-3`}>
               Accent Color
             </p>
             <div className="flex space-x-2">
