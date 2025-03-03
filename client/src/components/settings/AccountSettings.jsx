@@ -1,6 +1,9 @@
 import { useState } from "react";
+import { useTheme } from "../../context/ThemeContext";
 
 const AccountSettings = () => {
+  const {theme} = useTheme()
+
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -131,13 +134,13 @@ const AccountSettings = () => {
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Personal Information */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+        <div className={`${theme === "dark" ? "dark:bg-gray-800" : "bg-gray-100"} rounded-lg p-6 shadow-sm`}>
+          <h3 className={`text-lg font-semibold ${theme === "dark" ? "dark:text-white" : "text-gray-900"} mb-4`}>
             Personal Information
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className={`block text-sm font-medium ${theme === "dark" ? "dark:text-gray-300" : "text-gray-700"} mb-1`}>
                 First Name
               </label>
               <input
@@ -145,11 +148,11 @@ const AccountSettings = () => {
                 name="firstName"
                 value={formData.firstName}
                 onChange={handleChange}
-                className="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                className={`w-full rounded-md ${theme === "dark" ? "dark:border-gray-600 dark:bg-gray-700 dark:text-white" : "border-gray-300"} shadow-sm focus:border-blue-500 focus:ring-blue-500`}
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className={`block text-sm font-medium ${theme === "dark" ? "dark:text-gray-300" : "text-gray-700"} mb-1`}>
                 Last Name
               </label>
               <input
@@ -157,11 +160,11 @@ const AccountSettings = () => {
                 name="lastName"
                 value={formData.lastName}
                 onChange={handleChange}
-                className="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                className={`w-full rounded-md ${theme === "dark" ? "dark:border-gray-600 dark:bg-gray-700 dark:text-white" : "border-gray-300"} shadow-sm focus:border-blue-500 focus:ring-blue-500`}
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className={`block text-sm font-medium ${theme === "dark" ? "dark:text-gray-300" : "text-gray-700"} mb-1`}>
                 Email
               </label>
               <input
@@ -169,11 +172,11 @@ const AccountSettings = () => {
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                className="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                className={`w-full rounded-md ${theme === "dark" ? "dark:border-gray-600 dark:bg-gray-700 dark:text-white" : "border-gray-300"} shadow-sm focus:border-blue-500 focus:ring-blue-500`}
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className={`block text-sm font-medium ${theme === "dark" ? "dark:text-gray-300" : "text-gray-700"} mb-1`}>
                 Phone Number
               </label>
               <input
@@ -181,20 +184,20 @@ const AccountSettings = () => {
                 name="phone"
                 value={formData.phone}
                 onChange={handleChange}
-                className="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                className={`w-full rounded-md ${theme === "dark" ? "dark:border-gray-600 dark:bg-gray-700 dark:text-white" : "border-gray-300"} shadow-sm focus:border-blue-500 focus:ring-blue-500`}
               />
             </div>
           </div>
         </div>
 
         {/* Professional Information */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+        <div className={`${theme === "dark" ? "dark:bg-gray-800" : "bg-gray-100"} rounded-lg p-6 shadow-sm`}>
+          <h3 className={`text-lg font-semibold ${theme === "dark" ? "dark:text-white" : "text-gray-900"} mb-4`}>
             Professional Information
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className={`block text-sm font-medium ${theme === "dark" ? "dark:text-gray-300" : "text-gray-700"} mb-1`}>
                 Company/Organization
               </label>
               <input
@@ -202,11 +205,11 @@ const AccountSettings = () => {
                 name="company"
                 value={formData.company}
                 onChange={handleChange}
-                className="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                className={`w-full rounded-md ${theme === "dark" ? "dark:border-gray-600 dark:bg-gray-700 dark:text-white" : "border-gray-300"} shadow-sm focus:border-blue-500 focus:ring-blue-500`}
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className={`block text-sm font-medium ${theme === "dark" ? "dark:text-gray-300" : "text-gray-700"} mb-1`}>
                 Role/Position
               </label>
               <input
@@ -214,20 +217,20 @@ const AccountSettings = () => {
                 name="role"
                 value={formData.role}
                 onChange={handleChange}
-                className="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                className={`w-full rounded-md ${theme === "dark" ? "dark:border-gray-600 dark:bg-gray-700 dark:text-white" : "border-gray-300"} shadow-sm focus:border-blue-500 focus:ring-blue-500`}
               />
             </div>
           </div>
         </div>
 
         {/* Address Information */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+        <div className={`${theme === "dark" ? "dark:bg-gray-800" : "bg-gray-100"} rounded-lg p-6 shadow-sm`}>
+          <h3 className={`text-lg font-semibold ${theme === "dark" ? "dark:text-white" : "text-gray-900"} mb-4`}>
             Address Information
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className={`block text-sm font-medium ${theme === "dark" ? "dark:text-gray-300" : "text-gray-700"} mb-1`}>
                 Street Address
               </label>
               <input
@@ -235,11 +238,11 @@ const AccountSettings = () => {
                 name="address.street"
                 value={formData.address.street}
                 onChange={handleChange}
-                className="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                className={`w-full rounded-md ${theme === "dark" ? "dark:border-gray-600 dark:bg-gray-700 dark:text-white" : "border-gray-300"} shadow-sm focus:border-blue-500 focus:ring-blue-500`}
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className={`block text-sm font-medium ${theme === "dark" ? "dark:text-gray-300" : "text-gray-700"} mb-1`}>
                 City
               </label>
               <input
@@ -247,11 +250,11 @@ const AccountSettings = () => {
                 name="address.city"
                 value={formData.address.city}
                 onChange={handleChange}
-                className="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                className={`w-full rounded-md ${theme === "dark" ? "dark:border-gray-600 dark:bg-gray-700 dark:text-white" : "border-gray-300"} shadow-sm focus:border-blue-500 focus:ring-blue-500`}
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className={`block text-sm font-medium ${theme === "dark" ? "dark:text-gray-300" : "text-gray-700"} mb-1`}>
                 State/Province
               </label>
               <input
@@ -259,11 +262,11 @@ const AccountSettings = () => {
                 name="address.state"
                 value={formData.address.state}
                 onChange={handleChange}
-                className="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                className={`w-full rounded-md ${theme === "dark" ? "dark:border-gray-600 dark:bg-gray-700 dark:text-white" : "border-gray-300"} shadow-sm focus:border-blue-500 focus:ring-blue-500`}
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className={`block text-sm font-medium ${theme === "dark" ? "dark:text-gray-300" : "text-gray-700"} mb-1`}>
                 ZIP/Postal Code
               </label>
               <input
@@ -271,11 +274,11 @@ const AccountSettings = () => {
                 name="address.zipCode"
                 value={formData.address.zipCode}
                 onChange={handleChange}
-                className="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                className={`w-full rounded-md ${theme === "dark" ? "dark:border-gray-600 dark:bg-gray-700 dark:text-white" : "border-gray-300"} shadow-sm focus:border-blue-500 focus:ring-blue-500`}
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className={`block text-sm font-medium ${theme === "dark" ? "dark:text-gray-300" : "text-gray-700"} mb-1`}>
                 Country
               </label>
               <input
@@ -283,19 +286,19 @@ const AccountSettings = () => {
                 name="address.country"
                 value={formData.address.country}
                 onChange={handleChange}
-                className="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                className={`w-full rounded-md ${theme === "dark" ? "dark:border-gray-600 dark:bg-gray-700 dark:text-white" : "border-gray-300"} shadow-sm focus:border-blue-500 focus:ring-blue-500`}
               />
             </div>
           </div>
         </div>
 
         {/* Bio */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+        <div className={`${theme === "dark" ? "dark:bg-gray-800" : "bg-gray-100"} rounded-lg p-6 shadow-sm`}>
+          <h3 className={`text-lg font-semibold ${theme === "dark" ? "dark:text-white" : "text-gray-900"} mb-4`}>
             Bio
           </h3>
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className={`block text-sm font-medium ${theme === "dark" ? "dark:text-gray-300" : "text-gray-700"} mb-1`}>
               About You
             </label>
             <textarea
@@ -303,7 +306,7 @@ const AccountSettings = () => {
               value={formData.bio}
               onChange={handleChange}
               rows={4}
-              className="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              className={`w-full rounded-md ${theme === "dark" ? "dark:border-gray-600 dark:bg-gray-700 dark:text-white" : "border-gray-300"} shadow-sm focus:border-blue-500 focus:ring-blue-500`}
             />
           </div>
         </div>
