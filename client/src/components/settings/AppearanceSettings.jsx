@@ -1,14 +1,8 @@
-import { useEffect } from "react";
+import { useTheme } from "../../context/ThemeContext";
 import "../../index.css";
 
-const AppearanceSettings = ({ theme, setTheme }) => {
-  useEffect(() => {
-    if (theme === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [theme]);
+const AppearanceSettings = () => {
+  const { theme, setTheme } = useTheme(); // Ambil theme dari context
 
   const toggleTheme = () => {
     setTheme(theme === "light" ? "dark" : "light");
@@ -17,7 +11,7 @@ const AppearanceSettings = ({ theme, setTheme }) => {
   return (
     <div className="space-y-8 overflow-y-auto h-[calc(100vh-10rem)] pr-4 pb-4 no-scrollbar">
       <div>
-        <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-6">
+        <h2 className={`text-2xl font-semibold ${theme === "dark" ? "dark:text-white" : "text-black"} mb-6`}>
           Theme Settings
         </h2>
 
@@ -46,7 +40,7 @@ const AppearanceSettings = ({ theme, setTheme }) => {
 
       {/* Font Settings */}
       <div>
-        <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
+        <h3 className={`text-lg font-medium ${theme === "dark" ? "dark:text-white" : "text-black"} mb-4`}>
           Font Settings
         </h3>
         <div className="grid gap-4">
@@ -70,7 +64,7 @@ const AppearanceSettings = ({ theme, setTheme }) => {
 
       {/* Color Customization */}
       <div>
-        <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
+        <h3 className={`text-lg font-medium ${theme === "dark" ? "dark:text-white" : "text-black"} mb-4`}>
           Color Customization
         </h3>
         <div className="grid gap-4">

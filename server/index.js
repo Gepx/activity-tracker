@@ -3,10 +3,10 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const app = express();
 
-const taskRoutes = require("./routes/task");
-const eventRoutes = require("./routes/event");
-const contactRoutes = require("./routes/contact");
-const testimonialRoutes = require("./routes/testimonials");
+const taskRoutes = require("./routes/TaskRoute");
+const eventRoutes = require("./routes/EventRoute");
+const contactRoutes = require("./routes/ContactRoute");
+const testimonialRoutes = require("./routes/TestimonialsRoute");
 
 app.use(cors());
 app.use(express.json());

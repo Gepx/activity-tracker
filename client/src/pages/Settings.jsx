@@ -2,10 +2,11 @@ import { useState } from "react";
 import AppearanceSettings from "../components/settings/AppearanceSettings";
 import AccountSettings from "../components/settings/AccountSettings";
 import SecuritySettings from "../components/settings/SecuritySettings";
+import { useTheme } from "../context/ThemeContext";
 
 const Settings = () => {
   const [activeTab, setActiveTab] = useState("appearance");
-  const [theme, setTheme] = useState("light");
+  const {theme, setTheme} = useTheme();
 
   const tabs = [
     { id: "appearance", label: "Appearances" },
@@ -27,9 +28,9 @@ const Settings = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 overflow-y-hidden h-screen">
+    <div className={`min-h-screen overflow-y-hidden h-screen ${theme === "dark" ? "bg-gray-900 text-white" : "bg-white text-black"}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">
+        <h1 className={`text-3xl font-bold ${theme === "dark" ? "dark:text-white" : "text-black"} mb-8`}>
           Settings
         </h1>
 
