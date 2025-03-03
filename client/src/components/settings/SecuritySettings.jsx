@@ -1,6 +1,9 @@
 import { useState } from "react";
+import { useTheme } from "../../context/ThemeContext";
 
 const SecuritySettings = () => {
+  const {theme} = useTheme()
+
   const [passwordForm, setPasswordForm] = useState({
     currentPassword: "",
     newPassword: "",
@@ -50,13 +53,13 @@ const SecuritySettings = () => {
   return (
     <div className="max-w-4xl mx-auto space-y-6 overflow-y-auto h-[calc(100vh-10rem)] pr-4 pb-4 no-scrollbar">
       {/* Password Change Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm">
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+      <div className={`${theme === "dark" ? "dark:bg-gray-800" : "bg-gray-100"} rounded-lg p-6 shadow-sm`}>
+        <h3 className={`text-lg font-semibold ${theme === "dark" ? "dark:text-white" : "text-gray-900"} mb-4`}>
           Change Password
         </h3>
         <form onSubmit={handlePasswordSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className={`block text-sm font-medium ${theme === "dark" ? "dark:text-gray-300" : "text-gray-700"} mb-1`}>
               Current Password
             </label>
             <input
@@ -64,11 +67,11 @@ const SecuritySettings = () => {
               name="currentPassword"
               value={passwordForm.currentPassword}
               onChange={handlePasswordChange}
-              className="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              className={`w-full rounded-md ${theme === "dark" ? "dark:border-gray-600 dark:bg-gray-700 dark:text-white" : "border-gray-300"} shadow-sm focus:border-blue-500 focus:ring-blue-500`}
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className={`block text-sm font-medium ${theme === "dark" ? "dark:text-gray-300" : "text-gray-700"} mb-1`}>
               New Password
             </label>
             <input
@@ -76,11 +79,11 @@ const SecuritySettings = () => {
               name="newPassword"
               value={passwordForm.newPassword}
               onChange={handlePasswordChange}
-              className="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              className={`w-full rounded-md ${theme === "dark" ? "dark:border-gray-600 dark:bg-gray-700 dark:text-white" : "border-gray-300"} shadow-sm focus:border-blue-500 focus:ring-blue-500`}
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className={`block text-sm font-medium ${theme === "dark" ? "dark:text-gray-300" : "text-gray-700"} mb-1`}>
               Confirm New Password
             </label>
             <input
@@ -88,7 +91,7 @@ const SecuritySettings = () => {
               name="confirmPassword"
               value={passwordForm.confirmPassword}
               onChange={handlePasswordChange}
-              className="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              className={`w-full rounded-md ${theme === "dark" ? "dark:border-gray-600 dark:bg-gray-700 dark:text-white" : "border-gray-300"} shadow-sm focus:border-blue-500 focus:ring-blue-500`}
             />
           </div>
           <div>
@@ -102,10 +105,10 @@ const SecuritySettings = () => {
       </div>
 
       {/* Two-Factor Authentication */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm">
+      <div className={`${theme === "dark" ? "dark:bg-gray-800" : "bg-gray-100"} rounded-lg p-6 shadow-sm`}>
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+            <h3 className={`text-lg font-semibold ${theme === "dark" ? "dark:text-white" : "text-gray-900"} mb-4`}>
               Two-Factor Authentication
             </h3>
             <p className="text-sm text-gray-500 dark:text-gray-400">
@@ -145,20 +148,20 @@ const SecuritySettings = () => {
       </div>
 
       {/* Recovery Email */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm">
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+      <div className={`${theme === "dark" ? "dark:bg-gray-800" : "bg-gray-100"} rounded-lg p-6 shadow-sm`}>
+        <h3 className={`text-lg font-semibold ${theme === "dark" ? "dark:text-white" : "text-gray-900"} mb-4`}>
           Recovery Email
         </h3>
         <form onSubmit={handleRecoveryEmailSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className={`block text-sm font-medium ${theme === "dark" ? "dark:text-gray-300" : "text-gray-700"} mb-1`}>
               Backup Email Address
             </label>
             <input
               type="email"
               value={recoveryEmail}
               onChange={(e) => setRecoveryEmail(e.target.value)}
-              className="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              className={`w-full rounded-md ${theme === "dark" ? "dark:border-gray-600 dark:bg-gray-700 dark:text-white" : "border-gray-300"} shadow-sm focus:border-blue-500 focus:ring-blue-500`}
               placeholder="Enter backup email address"
             />
           </div>
@@ -173,8 +176,8 @@ const SecuritySettings = () => {
       </div>
 
       {/* Security Log */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm">
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+      <div className={`${theme === "dark" ? "dark:bg-gray-800" : "bg-gray-100"} rounded-lg p-6 shadow-sm`}>
+        <h3 className={`text-lg font-semibold ${theme === "dark" ? "dark:text-white" : "text-gray-900"} mb-4`}>
           Security Log
         </h3>
         <div className="space-y-4">
@@ -201,14 +204,14 @@ const SecuritySettings = () => {
                 key={index}
                 className="py-3 flex justify-between items-center text-sm">
                 <div>
-                  <p className="font-medium text-gray-900 dark:text-white">
+                  <p className={`font-medium ${theme === "dark" ? "dark:text-white" : "text-gray-900"}`}>
                     {log.event}
                   </p>
-                  <p className="text-gray-500 dark:text-gray-400">
+                  <p className={`${theme === "dark" ? "dark:text-gray-400" : "text-gray-500"}`}>
                     {log.location}
                   </p>
                 </div>
-                <p className="text-gray-500 dark:text-gray-400">{log.date}</p>
+                <p className={`${theme === "dark" ? "dark:text-gray-400" : "text-gray-500"}`}>{log.date}</p>
               </div>
             ))}
           </div>
