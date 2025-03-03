@@ -85,7 +85,7 @@ const Support = () => {
   return (
     <div className={`min-h-screen ${theme === "dark" ? "bg-gray-900 text-white" : "bg-gray-50 text-black"} overflow-y-auto h-[calc(100vh-10rem)] no-scrollbar`}>
       {/* Hero Section with Search */}
-      <div className="relative bg-gradient-to-r from-blue-600 to-blue-700 dark:from-blue-800 dark:to-blue-900">
+      <div className={`relative bg-gradient-to-r ${theme === "dark" ? "dark:from-blue-800 dark:to-blue-900" : "from-blue-600 to-blue-700"}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center">
           <h1 className="text-4xl font-bold text-white mb-6">
             How can we help you?
@@ -100,7 +100,7 @@ const Support = () => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search for help..."
-                className="w-full px-6 py-4 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400"
+                className={`w-full px-6 py-4 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${theme === "dark" ? "dark:bg-gray-800 dark:text-white dark:placeholder-gray-400" : null}`}
               />
               <FontAwesomeIcon
                 icon={faSearch}
@@ -118,18 +118,18 @@ const Support = () => {
             <a
               key={index}
               href={category.link}
-              className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow duration-200 group">
+              className={`${theme === "dark" ? "dark:bg-gray-800" : "bg-white"} rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow duration-200 group`}>
               <div className="flex flex-col items-center text-center">
-                <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center mb-4 group-hover:bg-blue-500 transition-colors duration-200">
+                <div className={`w-12 h-12 ${theme === "dark" ? "dark:bg-blue-900" : "bg-blue-100"} rounded-lg flex items-center justify-center mb-4 group-hover:bg-blue-500 transition-colors duration-200`}>
                   <FontAwesomeIcon
                     icon={category.icon}
-                    className="text-blue-600 dark:text-blue-400 text-2xl group-hover:text-white"
+                    className={`${theme === "dark" ? "dark:text-blue-400" : "text-blue-600"} text-2xl group-hover:text-white`}
                   />
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                <h3 className={`text-lg font-semibold ${theme === "dark" ? "dark:text-white" : "text-gray-900"} mb-2`}>
                   {category.title}
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400">
+                <p className={`${theme === "dark" ? "dark:text-gray-400" : "text-gray-600"}`}>
                   {category.description}
                 </p>
               </div>
@@ -144,7 +144,7 @@ const Support = () => {
           <h2 className={`text-3xl font-bold ${theme === "dark" ? "text-gray-900 dark:text-white" : "text-black"} mb-4`}>
             Frequently Asked Questions
           </h2>
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className={`${theme === "dark" ? "dark:text-gray-400" : "text-gray-600"}`}>
             Find quick answers to common questions
           </p>
         </div>
@@ -152,11 +152,11 @@ const Support = () => {
           {faqQuestions.map((faq, index) => (
             <div
               key={index}
-              className="bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden">
+              className={`${theme === "dark" ? "dark:bg-gray-800" : null} rounded-lg shadow-sm overflow-hidden`}>
               <button
                 onClick={() => toggleQuestion(index)}
                 className="w-full px-6 py-4 text-left flex justify-between items-center focus:outline-none">
-                <span className="text-lg font-medium text-gray-900 dark:text-white">
+                <span className={`text-lg font-medium ${theme === "dark" ? "dark:text-white" : "text-gray-900"}`}>
                   {faq.question}
                 </span>
                 <FontAwesomeIcon
@@ -168,7 +168,7 @@ const Support = () => {
               </button>
               {activeQuestion === index && (
                 <div className="px-6 pb-4">
-                  <p className="text-gray-600 dark:text-gray-400">
+                  <p className={`${theme === "dark" ? "dark:text-gray-400" : "text-gray-600"}`}>
                     {faq.answer}
                   </p>
                 </div>
@@ -185,50 +185,50 @@ const Support = () => {
             <h2 className={`text-3xl font-bold ${theme === "dark" ? "text-gray-900 dark:text-white" : "text-black"} mb-4`}>
               Still Need Help?
             </h2>
-            <p className="text-gray-600 dark:text-gray-400">
+            <p className={`${theme === "dark" ? "dark:text-gray-400" : "text-gray-600"}`}>
               Get in touch with our support team
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <a
               href="#contact"
-              className="bg-white dark:bg-gray-700 rounded-lg p-6 text-center hover:shadow-md transition-shadow duration-200">
+              className={`${theme === "dark" ? "dark:bg-gray-700" : "bg-white"} rounded-lg p-6 text-center hover:shadow-md transition-shadow duration-200`}>
               <FontAwesomeIcon
                 icon={faComments}
-                className="text-4xl text-blue-600 dark:text-blue-400 mb-4"
+                className={`text-4xl ${theme === "dark" ? "dark:text-blue-400" : "text-blue-600"} mb-4`}
               />
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+              <h3 className={`text-lg font-semibold ${theme === "dark" ? "dark:text-white" : "text-gray-900"} mb-2`}>
                 Live Chat
               </h3>
-              <p className="text-gray-600 dark:text-gray-400">
+              <p className={`${theme === "dark" ? "dark:text-gray-400" : "text-gray-600"}`}>
                 Chat with our support team
               </p>
             </a>
             <a
               href="#documentation"
-              className="bg-white dark:bg-gray-700 rounded-lg p-6 text-center hover:shadow-md transition-shadow duration-200">
+              className={`${theme === "dark" ? "dark:bg-gray-700" : "bg-white"} rounded-lg p-6 text-center hover:shadow-md transition-shadow duration-200`}>
               <FontAwesomeIcon
                 icon={faBook}
                 className="text-4xl text-blue-600 dark:text-blue-400 mb-4"
               />
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+              <h3 className={`text-lg font-semibold ${theme === "dark" ? "dark:text-white" : "text-gray-900"} mb-2`}>
                 Documentation
               </h3>
-              <p className="text-gray-600 dark:text-gray-400">
+              <p className={`${theme === "dark" ? "dark:text-gray-400" : "text-gray-600"}`}>
                 Browse detailed guides
               </p>
             </a>
             <a
               href="#ticket"
-              className="bg-white dark:bg-gray-700 rounded-lg p-6 text-center hover:shadow-md transition-shadow duration-200">
+              className={`${theme === "dark" ? "dark:bg-gray-700" : "bg-white"} rounded-lg p-6 text-center hover:shadow-md transition-shadow duration-200`}>
               <FontAwesomeIcon
                 icon={faGear}
                 className="text-4xl text-blue-600 dark:text-blue-400 mb-4"
               />
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+              <h3 className={`text-lg font-semibold ${theme === "dark" ? "dark:text-white" : "text-gray-900"} mb-2`}>
                 Submit Ticket
               </h3>
-              <p className="text-gray-600 dark:text-gray-400">
+              <p className={`${theme === "dark" ? "dark:text-gray-400" : "text-gray-600"}`}>
                 Open a support ticket
               </p>
             </a>
