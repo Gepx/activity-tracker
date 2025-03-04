@@ -243,7 +243,7 @@ const Projects = () => {
                               className="bg-white p-4 rounded-lg shadow-md border border-gray-200 w-[300px] h-full min-h-[160px] flex flex-col">
                               {/* Title and Menu */}
                               <div className="relative flex justify-between items-center">
-                                <h3 className="text-md font-medium">
+                                <h3 className="text-md font-medium overflow-hidden text-ellipsis whitespace-nowrap mr-2">
                                   {task.title}
                                 </h3>
                                 <div>
@@ -258,7 +258,7 @@ const Projects = () => {
                                       <button
                                         className="flex items-center gap-2 w-full px-3 py-2 hover:bg-gray-100 cursor-pointer"
                                         onClick={() =>
-                                          navigate(`/edit-task/${task._id}`)
+                                          navigate(`/success-login/edit-task/${task._id}`)
                                         }>
                                         <FontAwesomeIcon icon={faPen} /> Edit
                                       </button>

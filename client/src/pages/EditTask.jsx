@@ -62,7 +62,7 @@ const EditTask = () => {
       );
       if (response.status === 200) {
         console.log({ message: "Task updated successfully", response });
-        navigate("/projects");
+        navigate("/success-login/projects");
       }
     } catch (error) {
       console.error({ message: "Error updating task", error });
