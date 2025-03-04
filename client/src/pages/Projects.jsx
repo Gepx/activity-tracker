@@ -44,7 +44,7 @@ const Projects = () => {
   const navigate = useNavigate();
 
   function handleAddTask() {
-    navigate("/add-task");
+    navigate("/success-login/add-task");
   }
 
   const toggleMenu = (taskId) => {

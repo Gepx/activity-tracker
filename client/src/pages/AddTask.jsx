@@ -30,7 +30,7 @@ const AddTask = () => {
       );
       if (response.status === 201) {
         console.log({ message: "Task created successfully", response });
-        navigate("/projects");
+        navigate("/success-login/projects");
       }
     } catch (error) {
       console.log({ message: "Error creating task", error });

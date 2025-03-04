@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTheme } from "../context/ThemeContext";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -19,6 +20,8 @@ import axios from "axios";
 import RangePickerModal from "./RangePickerModal";
 
 const Dashboard = () => {
+  const {theme} = useTheme()
+
   const [selected, setSelected] = useState(new Date());
   const [tasks, setTasks] = useState([]);
   const [events, setEvents] = useState([]);
@@ -215,15 +218,15 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="h-screen flex overflow-hidden font-poppins">
+    <div className={`h-screen flex overflow-hidden font-poppins ${theme === "dark" ? "bg-gray-900 text-gray-100" : null}`}>
       {/* Main Content */}
-      <main className="flex-1 border-r-2 border-gray-200 px-6 py-6">
+      <main className={`flex-1 border-r-2 ${theme === "dark" ? "border-gray-500" : "border-gray-200"} px-6 py-6`}>
         {/* Search Bar */}
         <div className="relative w-full max-w-sm">
           <input
             type="text"
             placeholder="Search something..."
-            className="w-64 pl-4 pr-10 py-2 text-xs rounded-xl bg-gray-200 border-none text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-400 font-poppins"
+            className={`w-64 pl-4 pr-10 py-2 text-xs rounded-xl border-none ${theme === "dark" ? "bg-black text-gray-100 focus:ring-gray-700" : "bg-gray-200 text-gray-700 focus:ring-gray-400"} focus:outline-none focus:ring-2 font-poppins`}
           />
           <FontAwesomeIcon
             icon={faSearch}
@@ -236,7 +239,7 @@ const Dashboard = () => {
           <div className="flex flex-row items-center justify-between mb-0">
             <h3 className="text-lg font-bold">Activity Chart</h3>
             <div
-              className="flex items-center gap-2 px-3 py-1 border rounded-lg text-gray-700 cursor-pointer hover:bg-gray-50"
+              className={`flex items-center gap-2 px-3 py-1 border rounded-lg ${theme === "dark" ? "text-gray-100 hover:bg-gray-700" : "text-gray-700 hover:bg-gray-50"} cursor-pointer`}
               onClick={() => setShowRangePicker(true)}>
               <FontAwesomeIcon icon={faCalendarAlt} className="text-sm" />
               <span className="text-sm">
@@ -284,7 +287,7 @@ const Dashboard = () => {
             tasks.slice(0, 2).map((task) => (
               <div
                 key={task.id}
-                className="w-1/2 bg-white shadow-md rounded-lg px-4 py-2">
+                className={`w-1/2 ${theme === "dark" ? "bg-gray-800" : "bg-white"} shadow-md rounded-lg px-4 py-2`}>
                 {/* Status */}
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
@@ -295,22 +298,22 @@ const Dashboard = () => {
                   </div>
                   <input
                     type="checkbox"
-                    className="w-5 h-5 border-gray-400 rounded-full focus:ring-2 focus:ring-blue-500 cursor-pointer"
+                    className={`w-5 h-5 ${theme === "dark" ? null : "border-gray-400"} rounded-full focus:ring-2 focus:ring-blue-500 cursor-pointer`}
                   />
                 </div>
 
                 {/* Task Title */}
-                <h4 className="text-sm font-semibold text-gray-800">
+                <h4 className={`text-sm font-semibold ${theme === "dark" ? "text-gray-100" : "text-gray-800"}`}>
                   {task.title}
                 </h4>
 
                 {/* Description (Truncated if long) */}
-                <p className="text-gray-600 text-sm mt-2 truncate w-[250px]">
+                <p className={`${theme === "dark" ? "text-gray-400" : "text-gray-600"} text-sm mt-2 truncate w-[250px]`}>
                   {task.desc}
                 </p>
 
                 {/* Date + View Task */}
-                <div className="flex justify-between items-center text-gray-500 text-sm mt-3">
+                <div className={`flex justify-between items-center ${theme === "dark" ? "text-gray-400" : "text-gray-500"} text-sm mt-3`}>
                   {/* Date */}
                   <div className="flex items-center gap-1">
                     <FontAwesomeIcon
@@ -348,8 +351,8 @@ const Dashboard = () => {
             />
             <h2 className="text-sm font-semibold">Egip Sinargo</h2>
           </div>
-          <button className="bg-gray-200 rounded-full w-8 h-8 flex items-center justify-center cursor-pointer hover:bg-gray-300">
-            <FontAwesomeIcon icon={faEnvelope} className="btn" />
+          <button className={`${theme === "dark" ? "bg-gray-700 hover:bg-gray-600" : "bg-gray-200 hover:bg-gray-300"} rounded-full w-8 h-8 flex items-center justify-center cursor-pointer`}>
+            <FontAwesomeIcon icon={faEnvelope} className="btn text-gray-100" />
           </button>
         </div>
         <div className="mt-6">
@@ -361,12 +364,12 @@ const Dashboard = () => {
             className="w-[300px] text-sm"
             modifiersClassNames={{
               selected: "bg-green-500 text-white rounded-full",
-              today: "font-bold text-gray-900",
+              today: theme === "dark" ? "text-white font-bold" : "text-gray-900 font-bold",
             }}
             classNames={{
               caption: "text-gray-700 font-medium",
               head_cell: "text-gray-500",
-              day: "w-8 h-8 text-gray-700",
+              day: theme === "dark" ? "w-8 h-8 text-gray-400" : "w-8 h-8 text-gray-700",
               nav_button: "text-gray-700",
             }}
             // components={{
@@ -383,7 +386,7 @@ const Dashboard = () => {
           {/* Header Section */}
           <div className="flex items-center justify-between">
             <h3 className="text-lg font-bold">Upcoming Events</h3>
-            <button className="text-xs text-neutral-500 font-semibold hover:text-black transition cursor-pointer">
+            <button className={`text-xs ${theme === "dark" ? "text-gray-100 hover:text-gray-400" : "text-neutral-500 hover:text-black"} font-semibold transition cursor-pointer`}>
               View All
             </button>
           </div>
@@ -395,7 +398,7 @@ const Dashboard = () => {
               events.map((event) => (
                 <div
                   key={event.id}
-                  className="flex items-center gap-4 p-2 rounded-2xl shadow-md border border-gray-200 hover:bg-gray-100 transition cursor-pointer">
+                  className={"flex items-center gap-4 p-2 rounded-2xl shadow-md border border-gray-200 hover:bg-gray-100 transition cursor-pointer"}>
                   {/* Event Icon */}
                   <div className="w-12 h-12 bg-gray-300 rounded-lg"></div>
 
@@ -416,7 +419,7 @@ const Dashboard = () => {
                 </div>
               ))
             ) : (
-              <p className="text-sm text-gray-500">No upcoming events.</p>
+              <p className={`text-sm ${theme === "dark" ? "text-gray-100" : "text-gray-500"}`}>No upcoming events.</p>
             )}
           </div>
         </div>
